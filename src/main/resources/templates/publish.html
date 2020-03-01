@@ -1,0 +1,147 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>DGUT Answer Forum</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <!--<link rel="stylesheet" href="../static/css/bootstrap.min.css"/>-->
+    <!--<link rel="stylesheet" href="../static/css/bootstrap-theme.min.css"/>-->
+    <!--<script src="../static/js/bootstrap.min.js" type="application/javascript"></script>-->
+    <!--<link rel="stylesheet" href="../static/css/community.css">-->
+    <!--最新版本的 Bootstrap 核心 CSS 文件-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script><!--引入jQuery-->
+    <!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+    <style>
+        body {
+            background-color: #efefef;
+        }
+
+        .main {
+            background-color: white;
+            margin: 30px;
+        }
+
+        .btn-publish {
+            float: right;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">DGUT-问答论坛</span>
+            </button>
+            <a class="navbar-brand" href="/">DGUT-问答论坛</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <form class="navbar-form navbar-left">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="搜索问题">
+                </div>
+                <button type="submit" class="btn btn-default">搜索</button>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+                <li th:if="${session.user != null}">
+                    <a href="/publish">发布</a>
+                </li>
+                <li class="dropdown" th:if="${session.user != null}">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false" th:text="${session.user.getUsername()}"><span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">消息中心</a></li>
+                        <li><a href="#">个人资料</a></li>
+                        <li><a href="#">登出</a></li>
+                    </ul>
+                </li>
+                <li th:if="${session.user == null}"><a href="/to_login">登录</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container-fluid main">
+    <div class="row">
+        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+            <h2><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 发起</h2>
+            <hr>
+
+            <form action="/cque" id="questionForm">
+
+                <input type="hidden" id="creator" name="creator" th:value="${creator}">
+                <div class="form-group">
+                    <div class="col-sm-3 text-center">
+                        选择分类：
+                    </div>
+                    <div class="col-sm-3">
+                        <select class="form-control" name="category" id="category">
+                            <option value="语文">语文</option>
+                            <option value="数学">数学</option>
+                            <option value="英语">英语</option>
+                            <option value="哲学">哲学</option>
+                            <option value="经济学">经济学</option>
+                            <option value="法学">法学</option>
+                            <option value="教育学">教育学</option>
+                            <option value="文学学">文学</option>
+                            <option value="历史学">历史学</option>
+                            <option value="理学学">理学</option>
+                            <option value="管理学">管理学</option>
+                            <option value="艺术学">艺术学</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-3 text-center">
+                        选择教师：
+                    </div>
+                    <div class="col-sm-3">
+                        <select class="form-control" name="username" id="username">
+                            <option>==请选择===</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="title">问题标题：</label>
+                    <input type="text" class="form-control" id="title" name="title" placeholder="问题标题...">
+                </div>
+                <div class="form-group">
+                    <label for="content">问题补充：</label>
+                    <textarea name="content" id="content" class="form-control" cols="30" rows="10"></textarea>
+                </div>
+            </form>
+            <button type="submit" class="btn btn-success btn-publish" onclick="checkUser()">确认发布</button>
+        </div>
+        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+            <h3>问题发起指南</h3>
+            ·问题标题：请用精简的语言描述您发布的问题<br><br>
+            ·选择您发布问题的内容范畴以及选择的教师（选填）<br><br>
+            ·问题补充：详细补充您的问题内容，并确保问题描述清晰直观，并提供一些相关资料
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    function checkUser() {
+        var result = document.getElementById("title").value;
+        var password = document.getElementById("content").value;
+
+        if (result == "" || result == null) {
+            alert("标题不能为空");
+            return false;
+        }
+        if (password == "" || result == null) {
+            alert("内容不能为空");
+            return false;
+        }
+        document.getElementById("questionForm").submit();
+    }
+</script>
+</html>

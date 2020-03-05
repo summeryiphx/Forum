@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,5 +39,19 @@ public class PublishController {
         question.setGmtModified(question.getGmtCreate());
         questionMapper.CreateQuestion(question);
         return "redirect:/";
+    }
+
+    @RequestMapping("/to_editpublish")
+    public String to_editpublish(Integer id, Model model){
+        Question question = questionMapper.findById(id);
+        model.addAttribute("question",question);
+        return "update-publish";
+    }
+
+    @RequestMapping("/updatepublish")
+    public String updatepublish(Question question, Model model){
+        int row = questionMapper.updatepublish(question);
+        model.addAttribute("question",question);
+        return "question-view";
     }
 }

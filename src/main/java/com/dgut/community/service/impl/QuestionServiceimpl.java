@@ -11,11 +11,10 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 @Service
-public class QuestionServiceimpl implements QuestionService {
+public class QuestionServiceimpl implements QuestionService{
     @Autowired
     QuestionMapper questionMapper;
-    @Autowired
-    UserMapper userMapper;
+
     public List<Question> list(){
         return questionMapper.list();
     }

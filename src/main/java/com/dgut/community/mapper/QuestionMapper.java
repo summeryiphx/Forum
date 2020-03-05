@@ -6,7 +6,6 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Locale;
 
 @Mapper
 @Repository
@@ -14,4 +13,12 @@ public interface QuestionMapper {
     void CreateQuestion(Question question);
 
     List<Question> list();
+
+    List<Question> findAll();
+
+    List<Question> findByName(String username);
+
+    Question findById(@Param("id") Integer id);
+
+    int updatepublish(Question question);
 }

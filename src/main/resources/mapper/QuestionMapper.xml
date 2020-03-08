@@ -16,4 +16,10 @@
     <update id="updatepublish" parameterType="Question">
         update question set title=#{title},content=#{content},category=#{category} where id=#{id}
     </update>
+    <update id="incViewcount" parameterType="int">
+         update question set viewCount = viewCount+1 where id = #{id}
+    </update>
+    <update id="incCommentcount" parameterType="int">
+        update question set commentCount = commentCount+1 where id = #{id}
+    </update>
 </mapper>

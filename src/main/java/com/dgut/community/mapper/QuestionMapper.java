@@ -21,4 +21,8 @@ public interface QuestionMapper {
     Question findById(@Param("id") Integer id);
 
     int updatepublish(Question question);
+
+    int incViewcount(Integer id);
+
+    int incCommentcount(Integer id);
 }

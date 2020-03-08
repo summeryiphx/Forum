@@ -16,6 +16,7 @@ public class QuestionController {
     @RequestMapping("/getquestion")
     public String GetQuestion(Integer id, Model model){
         Question question=questionMapper.findById(id);
+        questionMapper.incViewcount(id);
         model.addAttribute("question",question);
         return "question-view";
     }

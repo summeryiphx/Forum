@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>DGUT Answer Forum</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <!--<link rel="stylesheet" href="../static/css/bootstrap.min.css"/>-->
+    <!--<link rel="stylesheet" href="../static/css/bootstrap-theme.min.css"/>-->
+    <!--<script src="../static/js/bootstrap.min.js" type="application/javascript"></script>-->
+    <link rel="stylesheet" href="../../static/layui/css/layui.css">
+    <!--最新版本的 Bootstrap 核心 CSS 文件-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script><!--引入jQuery-->
+    <!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <style>
+        body {
+            background-color: #efefef;
+            background-image: url("../../static/images/bg.jpg");
+        }
+
+        .main {
+            background-color: white;
+            margin: 60px;
+        }
+
+    </style>
+</head>
+<body>
+<div th:insert="~{navigation :: nav}"></div>
+<div class="container-fluid main col-lg-9 col-md-12 col-sm-12 col-xs-12" style="margin-left: 190px">
+    <div class="row" style="background-color: #f9f8ffb0">
+        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+            <h3>&nbsp;<span class="glyphicon glyphicon-list" aria-hidden="true"></span>&nbsp;发现</h3>
+            <hr>
+
+            <div class="media">
+                <div class="media-body">
+                    <h5 align="center">没有内容</h5>
+                    <br><br><br>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+            <h3>热门话题</h3>
+        </div>
+    </div>
+</div>
+</body>
+</html>

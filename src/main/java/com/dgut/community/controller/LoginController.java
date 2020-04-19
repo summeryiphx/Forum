@@ -1,6 +1,7 @@
 package com.dgut.community.controller;
 
 import com.dgut.community.entity.User;
+import com.dgut.community.mapper.NoticeMapper;
 import com.dgut.community.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,27 +18,32 @@ public class LoginController {
     @Autowired
     UserMapper userMapper;
 
+    @Autowired
+    NoticeMapper noticeMapper;
+
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     public String login(String account_id, String password , HttpSession session, HttpServletRequest request, Model model){
         User user=userMapper.findUser(account_id,password);
         if (user != null){
             session.setAttribute("user",user);
-            return "redirect:/";
+            int noticecount = noticeMapper.noticecount(user.getUser_id());
+            session.setAttribute("noticecount",noticecount);
+            return "redirect:/home";
         }else{
-            return "redirect:/to_login";
+            return "redirect:to_index";
         }
 
     }
 
-    @RequestMapping("to_login")
+    @RequestMapping("to_index")
     public String to_login(){
-        return "login";
+        return "index";
     }
 
     @RequestMapping("logout")
     public String logout(HttpSession session){
         session.invalidate();
-        return "redirect:/";
+        return "redirect:to_index";
     }
 
 

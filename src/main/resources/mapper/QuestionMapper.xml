@@ -2,24 +2,55 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.dgut.community.mapper.QuestionMapper">
 <insert id="CreateQuestion" parameterType="com.dgut.community.entity.Question">
-    INSERT INTO  question (title,content,creator,gmtCreate,gmtModified) VALUES(#{title},#{content},#{creator},#{gmtCreate},#{gmtModified});
+    INSERT INTO  question (title,content,creator,gmtCreate,gmtModified,tag,category,teacher) VALUES(#{title},#{content},#{creator},#{gmtCreate},#{gmtModified},#{tag},#{category},#{teacher});
 </insert>
     <select id="findByName" parameterType="String" resultType="Question">
-         select * from question where creator=#{username}
+         select * from question where creator=#{username} order by gmtCreate desc
     </select>
     <select id="findAll" resultType="Question">
-        select * from question
+        select * from question order by gmtCreate desc
     </select>
     <select id="findById" parameterType="int" resultType="Question">
         select * from question where id=#{id}
     </select>
     <update id="updatepublish" parameterType="Question">
-        update question set title=#{title},content=#{content},category=#{category} where id=#{id}
+        update question set title=#{title},content=#{content},tag=#{tag} where id=#{id}
     </update>
     <update id="incViewcount" parameterType="int">
          update question set viewCount = viewCount+1 where id = #{id}
     </update>
     <update id="incCommentcount" parameterType="int">
         update question set commentCount = commentCount+1 where id = #{id}
+    </update>
+    <select id="selectRelate" parameterType="Question" resultType="Question">
+        select * from question where id!=#{id} and tag regexp #{tag}
+    </select>
+    <select id="search2" parameterType="String" resultType="Question">
+        select * from question
+        <where>
+            <if test="search != null and search != ''">
+                and title regexp #{search}
+            </if>
+        </where>
+    </select>
+    <select id="search1" parameterType="String" resultType="Question">
+        select * from question
+        <where>
+            <if test="search != null and search != ''">
+                and title like concat('%',#{search},'%')
+            </if>
+        </where>
+    </select>
+    <delete id="del" parameterType="int">
+        delete from question where id=#{id}
+    </delete>
+    <update id="reduceCommentcount" parameterType="int">
+        update question set commentCount = commentCount-1 where id = #{id}
+    </update>
+    <select id="findTag" parameterType="int" resultType="String">
+        select tag from question where id=#{id}
+    </select>
+    <update id="updateLikeNum" parameterType="Question">
+        update question set likeCount=#{likeCount} where id=#{id}
     </update>
 </mapper>

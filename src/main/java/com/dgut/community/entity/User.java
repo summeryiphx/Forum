@@ -11,6 +11,7 @@ public class User {
     private String mobile;
     private String address;
     private Integer role_type;
+    private String avatar;
     private Role role;
 
 }

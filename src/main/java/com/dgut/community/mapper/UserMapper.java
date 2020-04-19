@@ -13,4 +13,8 @@ public interface UserMapper {
     User findUser(@Param("account_id") String account_id, @Param("password") String password);
 
     User findByName(@Param("username") String username);
+
+    User findByUserid(@Param("user_id") Integer user_id);
+
+    int updateAvatar(@Param("user_id") Integer user_id,@Param("avatar") String avatar);
 }

@@ -4,4 +4,22 @@
     <insert id="insert" parameterType="Comment">
         insert into comment (parent_id,content,type,commentator,gmt_create,gmt_modified) values (#{parent_id},#{content},#{type},#{commentator},#{gmt_create},#{gmt_modified})
     </insert>
+    <select id="findAllcomments" parameterType="int" resultType="Comment">
+        select * from comment where parent_id=#{id} and type=1
+    </select>
+    <select id="findSecondComments" parameterType="int" resultType="Comment">
+        select * from comment where secomment_id=#{id} and type=2
+    </select>
+    <insert id="insertsecomment" parameterType="Comment">
+        insert into comment (parent_id,content,type,commentator,gmt_create,gmt_modified,secomment_id) values (#{parent_id},#{content},#{type},#{commentator},#{gmt_create},#{gmt_modified},#{secomment_id})
+    </insert>
+    <update id="incsecomment_count" parameterType="int">
+         update comment set secomment_count = secomment_count+1 where id = #{id}
+    </update>
+    <select id="findById" parameterType="int" resultType="Comment">
+        select * from comment where id=#{id}
+    </select>
+    <delete id="del" parameterType="int">
+        delete from comment where id=#{id}
+    </delete>
 </mapper>

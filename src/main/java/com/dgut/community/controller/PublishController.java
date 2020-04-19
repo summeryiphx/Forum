@@ -1,8 +1,14 @@
 package com.dgut.community.controller;
 
+import com.dgut.community.Utils.JsonResult;
+import com.dgut.community.cache.TagCache;
+import com.dgut.community.dto.TagDTO;
 import com.dgut.community.entity.Question;
+import com.dgut.community.entity.Teacher;
 import com.dgut.community.entity.User;
 import com.dgut.community.mapper.QuestionMapper;
+import com.dgut.community.mapper.TeacherMapper;
+import com.dgut.community.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +26,12 @@ public class PublishController {
     @Autowired
     QuestionMapper questionMapper;
 
+    @Autowired
+    TeacherMapper teacherMapper;
+
+    @Autowired
+    UserMapper userMapper;
+
 //    @GetMapping("/publish")
 //    public ModelAndView publish(String creator, Model model){
 //        System.out.println(creator);
@@ -29,12 +41,14 @@ public class PublishController {
     @RequestMapping("/publish")
     public String publish(String creator,Model model){
         model.addAttribute("creator",creator);
+        model.addAttribute("tags", TagCache.get());
         return "publish";
     }
 
     @GetMapping("/cque")
     public String CreateQuestion(Question question, HttpSession session){
 //        User user=(User)session.getAttribute("user");
+
         question.setGmtCreate(System.currentTimeMillis());
         question.setGmtModified(question.getGmtCreate());
         questionMapper.CreateQuestion(question);
@@ -44,6 +58,9 @@ public class PublishController {
     @RequestMapping("/to_editpublish")
     public String to_editpublish(Integer id, Model model){
         Question question = questionMapper.findById(id);
+        String questiontag = questionMapper.findTag(id);
+        model.addAttribute("questiontag",questiontag);
+        model.addAttribute("tags", TagCache.get());
         model.addAttribute("question",question);
         return "update-publish";
     }
@@ -51,7 +68,21 @@ public class PublishController {
     @RequestMapping("/updatepublish")
     public String updatepublish(Question question, Model model){
         int row = questionMapper.updatepublish(question);
-        model.addAttribute("question",question);
+        Question question1 = questionMapper.findById(question.getId());
+        User user = userMapper.findByName(question1.getCreator());
+        question1.setUser(user);
+        model.addAttribute("question",question1);
         return "question-view";
+    }
+
+    @GetMapping("/category")
+    @ResponseBody
+    public JsonResult<Teacher> category(){
+        return JsonResult.success(teacherMapper.selectcatgegory());
+    }
+    @GetMapping("/teacher")
+    @ResponseBody
+    public JsonResult<Teacher> teacher(String category){
+        return JsonResult.success(teacherMapper.selectBycatgegory(category));
     }
 }

@@ -1,45 +1,167 @@
 <!DOCTYPE html>
 
 <html xmlns:th="http://www.thymeleaf.org">
-
 <body>
-
 <div th:fragment="nav">
-    <nav class="navbar navbar-default">
-        <div class="container-fluid" >
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <span class="sr-only">DGUT-问答论坛</span>
-                </button>
-                <a class="navbar-brand" href="/">DGUT-问答论坛</a>
-            </div>
+    <nav class="panel-menu" id="mobile-menu">
+        <ul>
 
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <form class="navbar-form navbar-left">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="搜索问题">
-                    </div>
-                    <button type="submit" class="btn btn-default">搜索</button>
-                </form>
-                <ul class="nav navbar-nav navbar-right">
-                    <li th:if="${session.user != null}">
-                        <a th:href="@{'/publish?creator='+${session.user.username}}">提问</a>
-                    </li>
-                    <li class="dropdown" th:if="${session.user != null}">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" >
-                            <span th:text="${session.user.getUsername()}"></span>
-                            <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="/personal/question">我的问题</a></li>
-                            <li><a href="#">个人资料</a></li>
-                            <li><a href="/logout" >登出</a></li>
-                        </ul>
-                    </li>
-                    <li th:if="${session.user == null}"><a href="/to_login">登录</a></li>
-                </ul>
+        </ul>
+        <div class="mm-navbtn-names">
+            <div class="mm-closebtn">
+                Close
+                <div class="tt-icon">
+                    <svg>
+                        <use xlink:href="#icon-cancel"></use>
+                    </svg>
+                </div>
             </div>
+            <div class="mm-backbtn">Back</div>
         </div>
     </nav>
+    <header id="tt-header">
+        <div class="container">
+            <div class="row tt-row no-gutters">
+                <div class="col-auto">
+                    <!-- toggle mobile menu -->
+                    <a class="toggle-mobile-menu" href="#">
+                        <svg class="tt-icon">
+                            <use xlink:href="#icon-menu_icon"></use>
+                        </svg>
+                    </a>
+                    <!-- /toggle mobile menu -->
+                    <!-- logo -->
+                    <div class="tt-logo">
+                        <a href="/"><img src="../static/images/logo.png"></a>
+                    </div>
+                    <!-- /logo -->
+                    <!-- desctop menu -->
+                    <div class="tt-desktop-menu">
+                        <nav>
+                            <ul>
+                                <li><a href="/"><span>Home</span></a></li>
+                                <li><a href="/to_categories"><span>Categories</span></a></li>
+                                <li><a th:href="@{'/publish?creator='+${session.user.username}}"><span>New</span></a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <!-- /desctop menu -->
+                    <!-- tt-search -->
+                    <div class="tt-search">
+                        <!-- toggle -->
+                        <button class="tt-search-toggle" data-toggle="modal" data-target="#modalAdvancedSearch">
+                            <svg class="tt-icon">
+                                <use xlink:href="#icon-search"></use>
+                            </svg>
+                        </button>
+                        <!-- /toggle -->
+                        <form class="search-wrapper">
+                            <div class="search-form">
+                                <input type="text" class="tt-search__input" placeholder="Search">
+                                <button class="tt-search__btn" type="submit">
+                                    <svg class="tt-icon">
+                                        <use xlink:href="#icon-search"></use>
+                                    </svg>
+                                </button>
+                                <button class="tt-search__close">
+                                    <svg class="tt-icon">
+                                        <use xlink:href="#cancel"></use>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="search-results">
+                                <div class="tt-search-scroll">
+                                    <ul>
+                                        <li>
+                                            <a href="question-view.html">
+                                                <h6 class="tt-title">Rdr2 secret easter eggs</h6>
+                                                <div class="tt-description">
+                                                    Here’s what I’ve found in Red Dead Redem..
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="question-view.html">
+                                                <h6 class="tt-title">Top 10 easter eggs in Red Dead Rede..</h6>
+                                                <div class="tt-description">
+                                                    You can find these easter eggs in Red Dea..
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="question-view.html">
+                                                <h6 class="tt-title">Red Dead Redemtion: Arthur Morgan..</h6>
+                                                <div class="tt-description">
+                                                    Here’s what I’ve found in Red Dead Redem..
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="question-view.html">
+                                                <h6 class="tt-title">Rdr2 secret easter eggs</h6>
+                                                <div class="tt-description">
+                                                    Here’s what I’ve found in Red Dead Redem..
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="question-view.html">
+                                                <h6 class="tt-title">Top 10 easter eggs in Red Dead Rede..</h6>
+                                                <div class="tt-description">
+                                                    You can find these easter eggs in Red Dea..
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="question-view.html">
+                                                <h6 class="tt-title">Red Dead Redemtion: Arthur Morgan..</h6>
+                                                <div class="tt-description">
+                                                    Here’s what I’ve found in Red Dead Redem..
+                                                </div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <button type="button" class="tt-view-all" data-toggle="modal" data-target="#modalAdvancedSearch">Advanced Search</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /tt-search -->
+                </div>
+                <div class="col-auto ml-auto">
+                    <div class="tt-user-info d-flex justify-content-center">
+                        <div th:if="${session.user != null}" style="margin-top: 5px">
+                            <a href="/personal/reply" class="tt-btn-icon">
+                                <i class="tt-icon"><svg><use xlink:href="#icon-notification"></use></svg></i>
+                                <span class="badge" th:text="${session.noticecount}"></span>
+                            </a>
+                        </div>
+                        <div class="tt-avatar-icon tt-size-md">
+                            <i class="tt-icon" th:if="${session.user.avatar==null}"><svg><use xlink:href="#icon-ava-d"></use></svg></i>
+                            <a href="#" th:if="${session.user.avatar!=null}">
+                                <img class="img-circle" style="width: 38px;height: 38px;margin-top: 5px" th:src="${session.user.avatar}">
+                            </a>
+                        </div>
+                        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                            <ul class="nav navbar-nav navbar-right">
+                                <li class="dropdown" th:if="${session.user != null}">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" >
+                                        <span th:text="${session.user.getUsername()}"></span>
+                                        <span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="/personal/question">我的问题</a></li>
+                                        <li><a href="/personal/reply">我的回复</a></li>
+                                        <li><a href="#">个人资料</a></li>
+                                        <li><a href="/logout" >登出</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
 </div>
 
 </body>

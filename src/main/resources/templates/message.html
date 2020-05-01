@@ -7,303 +7,97 @@
     <meta name="keywords" content="HTML5 Template">
     <meta name="description" content="Forum - Responsive HTML5 Template">
     <meta name="author" content="Forum">
-    <link rel="shortcut icon" href="../static/favicon/favicon.ico">
+    <link rel="shortcut icon" href="favicon/favicon.ico">
     <meta name="format-detection" content="telephone=no">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="../static/css/style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="../static/css/editormd.min.css">
     <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script><!--引入jQuery-->
+    <script src="../static/js/editormd.min.js" type="application/javascript"></script>
+    <script src="../static/js/bootstrap.js"></script>
+
+
     <!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
     <script src="https://cdn.bootcss.com/popper.js/1.14.7/umd/popper.min.js"></script>
     <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <style>
+        .btn-publish {
+            float: right;
+            margin-bottom: 15px;
+        }
+        .label-info{
+            white-space: normal;
+            margin: 5px 5px;
+            display: inline-block;
+        }
+    </style>
 </head>
 <body>
 <!-- tt-mobile menu -->
 <div th:insert="~{navigation :: nav}"></div>
-<main id="tt-pageContent" class="tt-offset-small">
+<main id="tt-pageContent">
     <div class="container">
-        <div class="tt-topic-list" th:if="${option == 'question'}">
-            <div class="tt-list-header">
-                <div class="tt-col-topic">Topic</div>
-                <div class="tt-col-category">Category</div>
-                <div class="tt-col-value hide-mobile">Likes</div>
-                <div class="tt-col-value hide-mobile">Replies</div>
-                <div class="tt-col-value hide-mobile">Views</div>
-            </div>
-            <h5 align="center" th:if="${questionList.isEmpty()==true}">你还没有发布任何问题，赶快点击右上角发布吧！</h5>
-            <div class="tt-item" th:each="question : ${questionList}">
-                <!--<div class="tt-col-avatar">-->
-                    <!--<div class="tt-icon">-->
-                        <!--<svg class="tt-icon" th:if="${session.user.avatar==null}">-->
-                            <!--<use xlink:href="#icon-ava-d"></use>-->
-                        <!--</svg>-->
-                        <!--<div  th:if="${session.user.avatar!=null}">-->
-                            <!--<img class="img-circle" style="width: 38px;height: 38px;margin-top: 5px" th:src="${session.user.avatar}">-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <div class="tt-col-description">
-                    <h6 class="tt-title"><a href="#">
-                        <a th:href="@{'/getquestion?id='+${question.id}}" th:text="${question.getTitle()}"></a>
-                    </a></h6>
-                    <div class="row align-items-center no-gutters">
-                        <div class="col-11">
-                            <ul class="tt-list-badge" th:each="tag : ${question.tag.split(',')}">
-                                <li class="show-mobile"><a href="#"><span class="tt-color04 tt-badge" ></span></a></li>
-                                <li><a th:href="@{'/findtag?tag='+${tag}}"><span class="tt-badge" th:text="${tag}"></span></a></li>
-                            </ul>
+        <div class="tt-wrapper-inner">
+            <h1 class="tt-title-border">
+                Leave a Message
+            </h1>
+            <form class="form-default form-create-topic" action="/cque" id="questionForm">
+                <div class="form-group">
+                    <label for="title">Message Title</label>
+                    <div class="tt-value-wrapper">
+                        <input type="text" class="form-control" id="title" name="title" placeholder="请输入留言标题·" autocomplete="off">
+                        <span class="tt-value-input">99</span>
+                    </div>
+                    <div class="tt-note">Describe your topic well, while keeping the subject as short as possible.</div>
+                </div>
+                <div class="form-group">
+                    <label>Topic Type</label>
+                    <div class="tt-js-active-btn tt-wrapper-btnicon">
+                        <div class="row tt-w410-col-02">
+                            <div class="col-4 col-lg-3 col-xl-2">
+                                <a href="#" class="tt-button-icon">
+                                    <span class="tt-icon">
+                                         <svg>
+                                            <use xlink:href="#Question"></use>
+                                        </svg>
+                                    </span>
+                                    <span class="tt-text">Message</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
-                    <a th:href="@{'/to_editpublish?id='+${question.id}}" class="little-menu" th:if="${session.user != null && question.creator == session.user.username}" style="font-size: 12px">
-                        <span class="glyphicon glyphicon-edit" aria-hidden="true" style="font-size: 12px"></span>
-                        修改提问
-                    </a>
-                    <input type="hidden" id="question_id" th:value="${question.id}">
-                    <a href="#" class="little-menu" th:if="${session.user != null && question.creator == session.user.username}" style="font-size: 12px" onclick="del()">
-                        <span class="glyphicon glyphicon-trash" aria-hidden="true" style="font-size: 12px"></span>
-                        删除
-                    </a>
                 </div>
-                <div class="tt-col-category"><span class="tt-color04 tt-badge" th:text="${question.category}"></span></div>
-                <div class="tt-col-value  hide-mobile" th:text="${question.likeCount}"></div>
-                <div class="tt-col-value tt-color-select  hide-mobile" th:text="${question.commentCount}"></div>
-                <div class="tt-col-value  hide-mobile" th:text="${question.viewCount}"></div>
-            </div>
-            <!--<div class="tt-item tt-item-popup">-->
-            <!--<div class="tt-col-avatar">-->
-            <!--<svg class="tt-icon">-->
-            <!--<use xlink:href="#icon-ava-f"></use>-->
-            <!--</svg>-->
-            <!--</div>-->
-            <!--<div class="tt-col-message">-->
-            <!--Please Log in.-->
-            <!--</div>-->
-            <!--<div class="tt-col-btn">-->
-            <!--<button type="button" class="btn btn-primary">Log in</button>-->
-            <!--<button type="button" class="btn-icon">-->
-            <!--<svg class="tt-icon">-->
-            <!--<use xlink:href="#icon-cancel"></use>-->
-            <!--</svg>-->
-            <!--</button>-->
-            <!--</div>-->
-            <!--</div>-->
-            <nav aria-label="Page navigation">
-                <ul class="pagination">
-                    <li>
-                        <a href="/personal/question?pageNum=1" aria-label="Previous">
-                            <span aria-hidden="true">首页</span>
-                        </a>
-                    </li>
-                    <li th:if="${pageInfo.hasPreviousPage}">
-                        <a th:href="@{'/personal/question?pageNum='+${pageInfo.prePage}}">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    <li th:each="page:${pageInfo.navigatepageNums}"><a th:href="@{'/personal/question?pageNum='+${page}}" th:text="${page}" th:if="${page != pageInfo.pageNum}"></a>
-                        <span style="font-weight: bold;background: #6faed9;" th:if="${page == pageInfo.pageNum}" th:text="${page}"></span>
-                    </li>
-                    <li th:if="${pageInfo.hasNextPage}">
-                        <a th:href="@{'/personal/question?pageNum='+${pageInfo.nextPage}}">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a th:href="@{'/personal/question?pageNum='+${pageInfo.pages}}" aria-label="Next">
-                            <span aria-hidden="true">尾页</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
+                <div class="pt-editor">
+                    <h6 class="pt-title">Message Body</h6>
+                    <div class="form-group" id="question-editor">
+                        <textarea name="content" id="content" class="form-control" style="display:none;" cols="30" rows="10"></textarea>
+                    </div>
+                    <script type="text/javascript">
+                        $(function() {
+                            var editor = editormd("question-editor", {
+                                width  : "100%",
+                                height : 350,
+                                path   : "../static/js/lib/",
+                                delay:0,
+                                tex:true,
+                                watch:true,
+                                flowChart:true,
+                                value:"``请输入问题详情,详细公式写法可查询http://editor.md.ipandao.com/``",
+                                imageUpload    : true,
+                                imageFormats   : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+                                imageUploadURL : "/file/upload",
+                            });
+                        });
+                    </script>
+                </div>
+            </form>
+            <button type="submit" class="btn btn-success btn-publish" onclick="checkUser()">确认发布</button>
         </div>
 
-        <div class="tt-topic-list" th:if="${option == 'reply'}">
-            <div class="tt-list-header">
-                <div class="tt-col-topic">Topic</div>
-                <div class="tt-col-category">Category</div>
-                <div class="tt-col-value hide-mobile">Likes</div>
-                <div class="tt-col-value hide-mobile">Replies</div>
-                <div class="tt-col-value hide-mobile">Views</div>
-            </div>
-            <h5 align="center" th:if="${noticDTOList.isEmpty()==true}">你还没有任何回复，赶快去留言吧！</h5>
-            <div class="tt-item" th:each="notice : ${noticDTOList}">
-                <div class="tt-col-avatar">
-                    <div class="tt-icon">
-                        <svg class="tt-icon" th:if="${notice.user.avatar==null}">
-                            <use xlink:href="#icon-ava-d"></use>
-                        </svg>
-                        <div  th:if="${notice.user.avatar!=null}">
-                            <img class="img-circle" style="width: 38px;height: 38px;margin-top: 5px" th:src="${notice.user.avatar}">
-                        </div>
-                    </div>
-                </div>
-                <div class="tt-col-description">
-                    <h6 class="tt-title" th:if="${notice.type == 1 && notice.outerId==0}"><div>
-                        <span th:text="${notice.notifier_name}+' :'"></span><br><br><span>评论了您的问题:</span>
-                        <span  th:text="${notice.title}"></span>
-                        &nbsp;&nbsp;<span class="tt-color06 tt-badge" >此问题已被删除</span>
-                    </div></h6>
-                    <h6 class="tt-title" th:if="${notice.type == 1 && notice.outerId!=0}"><div>
-                        <span th:text="${notice.notifier_name}+' :'"></span><br><br><span>评论了您的问题:</span>
-                        <a th:href="@{/notice(q_id=${notice.outerId},n_id=${notice.id})}" th:text="${notice.title}"></a>
-                        &nbsp;&nbsp;<span class="label label-warning" th:if="${notice.status == 0}">未读</span>
-                    </div></h6>
-
-                    <h6 class="tt-title" th:if="${notice.type == 2 && notice.outerId==0}"><div>
-                        <span th:text="${notice.notifier_name}+' :'"></span><br><br><span>回复了您的评论：</span>
-                        <span  th:text="${notice.title}"></span>
-                        &nbsp;&nbsp;<span class="tt-color06 tt-badge" >此问题已被删除</span>
-                    </div></h6>
-                    <h6 class="tt-title" th:if="${notice.type == 2 && notice.outerId!=0}"><div>
-                        <span th:text="${notice.notifier_name}+' :'"></span><br><br><span>回复了您的评论：</span>
-                        <a th:href="@{/notice(q_id=${notice.outerId},n_id=${notice.id})}" th:text="${notice.title}"></a>
-                        &nbsp;&nbsp;<span class="label label-warning" th:if="${notice.status == 0}">未读</span>
-                    </div></h6>
-
-                    <h6 class="tt-title" th:if="${notice.type == 3 && notice.outerId==0}"><div>
-                        <span th:text="${notice.notifier_name}+' :'"></span><br><br><span>点赞了您的问题：</span>
-                        <span  th:text="${notice.title}"></span>
-                        &nbsp;&nbsp;<span class="tt-color06 tt-badge" >此问题已被删除</span>
-                    </div></h6>
-                    <h6 class="tt-title" th:if="${notice.type == 3 && notice.outerId!=0}"><div>
-                        <span th:text="${notice.notifier_name}+' :'"></span><br><br><span>点赞了您的评论：</span>
-                        <a th:href="@{/notice(q_id=${notice.outerId},n_id=${notice.id})}" th:text="${notice.title}"></a>
-                    </div></h6>
-
-                    <h6 class="tt-title" th:if="${notice.type == 4 && notice.outerId==0}"><div>
-                        <span th:text="${notice.notifier_name}+' :'"></span><br><br><span>邀请您解答疑问：</span>
-                        <span  th:text="${notice.title}"></span>
-                        &nbsp;&nbsp;<span class="tt-color06 tt-badge" >此问题已被删除</span>
-                    </div></h6>
-                    <h6 class="tt-title" th:if="${notice.type == 4 && notice.outerId!=0}"><div>
-                        <span th:text="${notice.notifier_name}+' :'"></span><br><br><span>邀请您解答疑问：</span>
-                        <a th:href="@{/notice(q_id=${notice.outerId},n_id=${notice.id})}" th:text="${notice.title}"></a>
-                        &nbsp;&nbsp;<span class="label label-warning" th:if="${notice.status == 0}">未读</span>
-                    </div></h6>
-
-                    <div class="row align-items-center no-gutters">
-                        <div class="col-11" th:if="${notice.outerId!=0 && notice.question.tag != null}">
-                            <ul class="tt-list-badge" th:each="tag : ${notice.question.tag.split(',')}">
-                                <li><a th:href="@{'/findtag?tag='+${tag}}"><span class="tt-badge" th:text="${tag}"></span></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="tt-col-category" th:if="${notice.outerId!=0}"><span class="tt-color04 tt-badge" th:text="${notice.question.category}"></span></div>
-                <div class="tt-col-value  hide-mobile" th:if="${notice.outerId!=0}" th:text="${notice.question.likeCount}"></div>
-                <div class="tt-col-value tt-color-select  hide-mobile" th:if="${notice.outerId!=0}" th:text="${notice.question.commentCount}"></div>
-                <div class="tt-col-value  hide-mobile" th:if="${notice.outerId!=0}" th:text="${notice.question.viewCount}"></div>
-            </div>
-            <!--<div class="tt-item tt-item-popup">-->
-            <!--<div class="tt-col-avatar">-->
-            <!--<svg class="tt-icon">-->
-            <!--<use xlink:href="#icon-ava-f"></use>-->
-            <!--</svg>-->
-            <!--</div>-->
-            <!--<div class="tt-col-message">-->
-            <!--Please Log in.-->
-            <!--</div>-->
-            <!--<div class="tt-col-btn">-->
-            <!--<button type="button" class="btn btn-primary">Log in</button>-->
-            <!--<button type="button" class="btn-icon">-->
-            <!--<svg class="tt-icon">-->
-            <!--<use xlink:href="#icon-cancel"></use>-->
-            <!--</svg>-->
-            <!--</button>-->
-            <!--</div>-->
-            <!--</div>-->
-            <nav aria-label="Page navigation">
-                <ul class="pagination">
-                    <li>
-                        <a href="/personal/reply?pageNum=1" aria-label="Previous">
-                            <span aria-hidden="true">首页</span>
-                        </a>
-                    </li>
-                    <li th:if="${pageInfo.hasPreviousPage}">
-                        <a th:href="@{'/personal/reply?pageNum='+${pageInfo.prePage}}">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    <li th:each="page:${pageInfo.navigatepageNums}"><a th:href="@{'/personal/reply?pageNum='+${page}}" th:text="${page}" th:if="${page != pageInfo.pageNum}"></a>
-                        <span style="font-weight: bold;background: #6faed9;" th:if="${page == pageInfo.pageNum}" th:text="${page}"></span>
-                    </li>
-                    <li th:if="${pageInfo.hasNextPage}">
-                        <a th:href="@{'/personal/reply?pageNum='+${pageInfo.nextPage}}">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a th:href="@{'/personal/reply?pageNum='+${pageInfo.pages}}" aria-label="Next">
-                            <span aria-hidden="true">尾页</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-
-        <div class="tt-topic-list" th:if="${option == 'collect'}">
-            <div class="tt-list-header">
-                <div class="tt-col-topic">Topic</div>
-                <div class="tt-col-category">Category</div>
-                <div class="tt-col-value hide-mobile">Likes</div>
-                <div class="tt-col-value hide-mobile">Replies</div>
-                <div class="tt-col-value hide-mobile">Views</div>
-            </div>
-                <h5 align="center" th:if="${questiocollectnList.isEmpty()==true}">你还没有任何收藏，赶快再去看看吧！</h5>
-            <div class="tt-item" th:each="question : ${questiocollectnList}">
-
-                <div class="tt-col-description">
-                    <h6 class="tt-title"><a href="#">
-                        <a th:href="@{'/getquestion?id='+${question.id}}" th:text="${question.getTitle()}"></a>
-                    </a></h6>
-                    <div class="row align-items-center no-gutters">
-                        <div class="col-11">
-                            <ul class="tt-list-badge" th:each="tag : ${question.tag.split(',')}">
-                                <li class="show-mobile"><a href="#"><span class="tt-color04 tt-badge" ></span></a></li>
-                                <li><a th:href="@{'/findtag?tag='+${tag}}"><span class="tt-badge" th:text="${tag}"></span></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <a href="#" class="little-menu" th:if="${session.user != null && question.creator == session.user.username}" style="font-size: 12px" th:onclick="'cancel('+${question.id}+')'">
-                        <span class="glyphicon glyphicon-star" aria-hidden="true" style="font-size: 12px"></span>
-                        取消收藏
-                    </a>
-                </div>
-                <div class="tt-col-category"><span class="tt-color04 tt-badge" th:text="${question.category}"></span></div>
-                <div class="tt-col-value  hide-mobile" th:text="${question.likeCount}"></div>
-                <div class="tt-col-value tt-color-select  hide-mobile" th:text="${question.commentCount}"></div>
-                <div class="tt-col-value  hide-mobile" th:text="${question.viewCount}"></div>
-            </div>
-
-            <nav aria-label="Page navigation" th:if="${questiocollectnList.isEmpty()!=true}">
-                <ul class="pagination">
-                    <li>
-                        <a href="/personal/question?pageNum=1" aria-label="Previous">
-                            <span aria-hidden="true">首页</span>
-                        </a>
-                    </li>
-                    <li th:if="${pageInfo.hasPreviousPage}">
-                        <a th:href="@{'/personal/collect?pageNum='+${pageInfo.prePage}}">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    <li th:each="page:${pageInfo.navigatepageNums}"><a th:href="@{'/personal/collect?pageNum='+${page}}" th:text="${page}" th:if="${page != pageInfo.pageNum}"></a>
-                        <span style="font-weight: bold;background: #6faed9;" th:if="${page == pageInfo.pageNum}" th:text="${page}"></span>
-                    </li>
-                    <li th:if="${pageInfo.hasNextPage}">
-                        <a th:href="@{'/personal/collect?pageNum='+${pageInfo.nextPage}}">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a th:href="@{'/personal/collect?pageNum='+${pageInfo.pages}}" aria-label="Next">
-                            <span aria-hidden="true">尾页</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
     </div>
 </main>
 <div id="js-popup-settings" class="tt-popup-settings">
@@ -530,50 +324,19 @@
 </div>
 <script src="../static/js/bundle.js"></script>
 <script>
-    function del() {
-        var question_id = $("#question_id").val();
-        var accept = confirm("确认删除？");
-        if (accept) {
-            $.ajax({
-                dataType: "json",
-                type: "POST",
-                url: "/delete",
-                data: {
-                    "id":question_id
-                },
-                success: function (data) {
-                    if (data > 0) {
-                        alert('删除成功');
-                        setTimeout(function () {
-                            parent.window.location.reload();
-                        },1000);
-                    } else {
-                        alert('删除失败');
-                        /*window.location.href = "to_supplyexaminelist";*/
-                        setTimeout(function () {
-                            parent.window.location.reload();
-                        },1000);
-                    }
-                }
-            });
+    function checkUser() {
+        var result = document.getElementById("title").value;
+        var password = document.getElementById("content").value;
+
+        if (result == "" || result == null) {
+            alert("标题不能为空");
+            return false;
         }
-
-    }
-    function cancel(id) {
-        $.ajax({
-            url:'/cancelcollectioned',
-            type:'get',
-            data:{'id':id},
-            success:function (data) {
-                if(data=="已取消收藏~"){
-
-                    // document.getElementById("sc").innerText="收藏";
-                    alert(data);
-                }else if (data=="发生了一点小错误~请稍后再试"){
-                    alert(data);
-                }
-            }
-        });
+        if (password == "" || result == null) {
+            alert("内容不能为空");
+            return false;
+        }
+        $("#questionForm").submit();
     }
 
 </script>

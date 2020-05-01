@@ -18,4 +18,6 @@ public interface NoticeMapper {
     int noticecount(Integer id);
 
     int read(Integer id);
+
+    void updateOuterID(Integer id);
 }

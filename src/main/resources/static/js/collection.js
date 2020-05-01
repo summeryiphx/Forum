@@ -39,6 +39,9 @@ function cancel(id) {
                 document.getElementById("sc").setAttribute("class","glyphicon glyphicon-star-empty");
                 // document.getElementById("sc").innerText="收藏";
                 alert(data);
+                setTimeout(function () {
+                    parent.window.location.reload();
+                },1000);
             }else if (data=="发生了一点小错误~请稍后再试"){
                 alert(data);
             }

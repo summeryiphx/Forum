@@ -10,4 +10,7 @@
     <select id="findByUserIDAndQID" resultType="QuestionCollect">
         select * from collection where user_id=#{user_id} and question_id=#{question_id}
     </select>
+    <select id="findByUserID" resultType="QuestionCollect">
+        select * from collection where user_id=#{user_id}
+    </select>
 </mapper>

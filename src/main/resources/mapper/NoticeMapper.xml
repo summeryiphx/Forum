@@ -13,4 +13,7 @@
     <update id="read" parameterType="int">
         update notice set status = 1 where id = #{id}
     </update>
+    <update id="updateOuterID" parameterType="int">
+        update notice set outerId = 0 where outerId = #{id}
+    </update>
 </mapper>

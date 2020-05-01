@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,15 +23,17 @@ public class LoginController {
     NoticeMapper noticeMapper;
 
     @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public String login(String account_id, String password , HttpSession session, HttpServletRequest request, Model model){
+    @ResponseBody
+    public int login(String account_id, String password , HttpSession session, HttpServletRequest request, Model model){
         User user=userMapper.findUser(account_id,password);
         if (user != null){
             session.setAttribute("user",user);
             int noticecount = noticeMapper.noticecount(user.getUser_id());
             session.setAttribute("noticecount",noticecount);
-            return "redirect:/home";
+
+            return 1;
         }else{
-            return "redirect:to_index";
+            return -1;
         }
 
     }

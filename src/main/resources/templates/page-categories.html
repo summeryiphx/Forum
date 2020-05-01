@@ -91,7 +91,7 @@
                                             <div class="innerwrapper">
                                                 <h6 class="tt-title">Similar TAGS</h6>
                                                 <ul class="tt-list-badge" th:each="tag : ${tags.get(0).tags}">
-                                                    <li><a href="#"><span class="tt-badge" th:text="${tag}"></span></a></li>
+                                                    <li><a th:href="@{'/findtag?tag='+${tag}}"><span class="tt-badge" th:text="${tag}"></span></a></li>
                                                 </ul>
                                             </div>
                                             <a href="#" class="tt-btn-icon">
@@ -115,7 +115,7 @@
                                             <div class="innerwrapper">
                                                 <h6 class="tt-title">Similar TAGS</h6>
                                                 <ul class="tt-list-badge" th:each="tag : ${tags.get(1).tags}">
-                                                    <li><a href="#"><span class="tt-badge" th:text="${tag}"></span></a></li>
+                                                    <li><a th:href="@{'/findtag?tag='+${tag}}"><span class="tt-badge" th:text="${tag}"></span></a></li>
                                                 </ul>
                                             </div>
                                             <a href="#" class="tt-btn-icon">
@@ -139,7 +139,7 @@
                                             <div class="innerwrapper">
                                                 <h6 class="tt-title">Similar TAGS</h6>
                                                 <ul class="tt-list-badge" th:each="tag : ${tags.get(2).tags}">
-                                                    <li><a href="#"><span class="tt-badge" th:text="${tag}"></span></a></li>
+                                                    <li><a th:href="@{'/findtag?tag='+${tag}}"><span class="tt-badge" th:text="${tag}"></span></a></li>
                                                 </ul>
                                             </div>
                                             <a href="#" class="tt-btn-icon">
@@ -163,7 +163,7 @@
                                             <div class="innerwrapper">
                                                 <h6 class="tt-title">Similar TAGS</h6>
                                                 <ul class="tt-list-badge" th:each="tag : ${tags.get(3).tags}">
-                                                    <li><a href="#"><span class="tt-badge" th:text="${tag}"></span></a></li>
+                                                    <li><a th:href="@{'/findtag?tag='+${tag}}"><span class="tt-badge" th:text="${tag}"></span></a></li>
                                                 </ul>
                                             </div>
                                             <a href="#" class="tt-btn-icon">
@@ -187,7 +187,7 @@
                                             <div class="innerwrapper">
                                                 <h6 class="tt-title">Similar TAGS</h6>
                                                 <ul class="tt-list-badge" th:each="tag : ${tags.get(4).tags}">
-                                                    <li><a href="#"><span class="tt-badge" th:text="${tag}"></span></a></li>
+                                                    <li><a th:href="@{'/findtag?tag='+${tag}}"><span class="tt-badge" th:text="${tag}"></span></a></li>
                                                 </ul>
                                             </div>
                                             <a href="#" class="tt-btn-icon">
@@ -211,7 +211,7 @@
                                             <div class="innerwrapper">
                                                 <h6 class="tt-title">Similar TAGS</h6>
                                                 <ul class="tt-list-badge" th:each="tag : ${tags.get(5).tags}">
-                                                    <li><a href="#"><span class="tt-badge" th:text="${tag}"></span></a></li>
+                                                    <li><a th:href="@{'/findtag?tag='+${tag}}"><span class="tt-badge" th:text="${tag}"></span></a></li>
                                                 </ul>
                                             </div>
                                             <a href="#" class="tt-btn-icon">
@@ -235,7 +235,7 @@
                                             <div class="innerwrapper">
                                                 <h6 class="tt-title">Similar TAGS</h6>
                                                 <ul class="tt-list-badge" th:each="tag : ${tags.get(6).tags}">
-                                                    <li><a href="#"><span class="tt-badge" th:text="${tag}"></span></a></li>
+                                                    <li><a th:href="@{'/findtag?tag='+${tag}}"><span class="tt-badge" th:text="${tag}"></span></a></li>
                                                 </ul>
                                             </div>
                                             <a href="#" class="tt-btn-icon">
@@ -259,7 +259,7 @@
                                             <div class="innerwrapper">
                                                 <h6 class="tt-title">Similar TAGS</h6>
                                                 <ul class="tt-list-badge" th:each="tag : ${tags.get(7).tags}">
-                                                    <li><a href="#"><span class="tt-badge" th:text="${tag}"></span></a></li>
+                                                    <li><a th:href="@{'/findtag?tag='+${tag}}"><span class="tt-badge" th:text="${tag}"></span></a></li>
                                                 </ul>
                                             </div>
                                             <a href="#" class="tt-btn-icon">
@@ -283,7 +283,7 @@
                                             <div class="innerwrapper">
                                                 <h6 class="tt-title">Similar TAGS</h6>
                                                 <ul class="tt-list-badge" th:each="tag : ${tags.get(8).tags}">
-                                                    <li><a href="#"><span class="tt-badge" th:text="${tag}"></span></a></li>
+                                                    <li><a th:href="@{'/findtag?tag='+${tag}}"><span class="tt-badge" th:text="${tag}"></span></a></li>
                                                 </ul>
                                             </div>
                                             <a href="#" class="tt-btn-icon">
@@ -307,7 +307,7 @@
                                             <div class="innerwrapper">
                                                 <h6 class="tt-title">Similar TAGS</h6>
                                                 <ul class="tt-list-badge" th:each="tag : ${tags.get(9).tags}">
-                                                    <li><a href="#"><span class="tt-badge" th:text="${tag}"></span></a></li>
+                                                    <li><a th:href="@{'/findtag?tag='+${tag}}"><span class="tt-badge" th:text="${tag}"></span></a></li>
                                                 </ul>
                                             </div>
                                             <a href="#" class="tt-btn-icon">
@@ -331,7 +331,7 @@
                                             <div class="innerwrapper">
                                                 <h6 class="tt-title">Similar TAGS</h6>
                                                 <ul class="tt-list-badge" th:each="tag : ${tags.get(10).tags}">
-                                                    <li><a href="#"><span class="tt-badge" th:text="${tag}"></span></a></li>
+                                                    <li><a th:href="@{'/findtag?tag='+${tag}}"><span class="tt-badge" th:text="${tag}"></span></a></li>
                                                 </ul>
                                             </div>
                                             <a href="#" class="tt-btn-icon">

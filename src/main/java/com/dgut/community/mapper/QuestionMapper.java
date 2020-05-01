@@ -10,7 +10,7 @@ import java.util.List;
 @Mapper
 @Repository
 public interface QuestionMapper {
-    void CreateQuestion(Question question);
+    int CreateQuestion(Question question);
 
     List<Question> list();
 
@@ -41,4 +41,6 @@ public interface QuestionMapper {
     String findTag(Integer id);
 
     int updateLikeNum(Question question);
+
+    List<Question> findByTag(String tag);
 }

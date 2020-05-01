@@ -211,7 +211,7 @@
     //提交评论
     function post() {
         var question_id = $("#question_id").val();
-        var content = $("#comment_content").val();
+        var content = $("#content").val();
         if (!content){
             alert("评论不能为空~");
             return;
@@ -233,12 +233,6 @@
                     setTimeout(function () {
                         parent.window.location.reload();
                     },1000);
-                } else {
-                        var accept = confirm("该操作需要登录，是否马上登录？");
-                        if (accept) {
-                            window.open("/to_login");
-                            window.localStorage.setItem("closable",true);
-                        }
                 }
             },
             dataType: "json"

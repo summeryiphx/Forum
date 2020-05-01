@@ -3,9 +3,11 @@ package com.dgut.community.controller;
 import com.dgut.community.Utils.JsonResult;
 import com.dgut.community.cache.TagCache;
 import com.dgut.community.dto.TagDTO;
+import com.dgut.community.entity.Notice;
 import com.dgut.community.entity.Question;
 import com.dgut.community.entity.Teacher;
 import com.dgut.community.entity.User;
+import com.dgut.community.mapper.NoticeMapper;
 import com.dgut.community.mapper.QuestionMapper;
 import com.dgut.community.mapper.TeacherMapper;
 import com.dgut.community.mapper.UserMapper;
@@ -32,6 +34,9 @@ public class PublishController {
     @Autowired
     UserMapper userMapper;
 
+    @Autowired
+    NoticeMapper noticeMapper;
+
 //    @GetMapping("/publish")
 //    public ModelAndView publish(String creator, Model model){
 //        System.out.println(creator);
@@ -47,11 +52,23 @@ public class PublishController {
 
     @GetMapping("/cque")
     public String CreateQuestion(Question question, HttpSession session){
-//        User user=(User)session.getAttribute("user");
+        User user=(User)session.getAttribute("user");
 
         question.setGmtCreate(System.currentTimeMillis());
         question.setGmtModified(question.getGmtCreate());
         questionMapper.CreateQuestion(question);
+
+        Notice notice = new Notice();
+        notice.setNotifier(user.getUser_id());
+        notice.setNotifier_name(user.getUsername());
+        notice.setTitle(question.getTitle());
+        User receiver = userMapper.findByName(question.getTeacher());
+        notice.setReceiver(receiver.getUser_id());
+        notice.setOuterId(question.getId());
+        notice.setType(4);
+        notice.setGmt_create(System.currentTimeMillis());
+        notice.setStatus(0);
+        noticeMapper.insert(notice);
         return "redirect:/";
     }
 

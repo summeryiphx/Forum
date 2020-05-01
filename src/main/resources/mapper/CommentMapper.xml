@@ -22,4 +22,7 @@
     <delete id="del" parameterType="int">
         delete from comment where id=#{id}
     </delete>
+    <delete id="deleteByparentid" parameterType="int">
+        delete from comment where parent_id=#{id}
+    </delete>
 </mapper>

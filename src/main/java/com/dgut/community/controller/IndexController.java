@@ -106,8 +106,9 @@ public class IndexController {
     @RequestMapping("/search")
     public String Search(String search,Model model,@RequestParam(required = false,defaultValue = "1") Integer pageNum){
         if (search.isEmpty()){
-            return "redirect:/";
+            return "redirect:/home";
         }
+        model.addAttribute("keyword",search);
         if (!search.contains(" ") || (search.substring(search.length() - 1).equals(" ") && !search.substring(0,search.length()-1).contains(" "))){
             if (search.substring(search.length() - 1).equals(" ")){
                 search = search.substring(0,search.length()-1);
@@ -118,10 +119,17 @@ public class IndexController {
             if (questionList.isEmpty()){
                 return "findnothing";
             }
-            model.addAttribute("question2",questionList);
+            List<Question> questionList1=new ArrayList<>();
+            for (Question question:questionList){
+                User user=userMapper.findByName(question.getCreator());
+                question.setUser(user);
+                questionList1.add(question);
+            }
+            model.addAttribute("question1",questionList1);
             model.addAttribute("pageInfo",pageInfo);
-            return "home";
+            return "search";
         }else {
+            model.addAttribute("keyword",search);
             String[] tags = StringUtils.split(search, " ");
             search = Arrays.stream(tags).collect(Collectors.joining("|"));
             PageHelper.startPage(pageNum,15);
@@ -131,9 +139,15 @@ public class IndexController {
             if (questionList.isEmpty()){
                 return "findnothing";
             }
-            model.addAttribute("question2",questionList);
+            List<Question> questionList1=new ArrayList<>();
+            for (Question question:questionList){
+                User user=userMapper.findByName(question.getCreator());
+                question.setUser(user);
+                questionList1.add(question);
+            }
+            model.addAttribute("question1",questionList1);
             model.addAttribute("pageInfo",pageInfo);
-            return "home";
+            return "search";
         }
 
     }

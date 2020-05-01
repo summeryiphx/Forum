@@ -23,4 +23,6 @@ public interface CommentMapper {
     Comment findById(Integer id);
 
     int del(Integer id);
+
+    int deleteByparentid(Integer id);
 }

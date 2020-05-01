@@ -21,10 +21,109 @@
 </head>
 <body>
 <!-- tt-mobile menu -->
-<div th:insert="~{navigation :: nav}"></div>
+<nav class="panel-menu" id="mobile-menu">
+    <ul>
+
+    </ul>
+    <div class="mm-navbtn-names">
+        <div class="mm-closebtn">
+            Close
+            <div class="tt-icon">
+                <svg>
+                    <use xlink:href="#icon-cancel"></use>
+                </svg>
+            </div>
+        </div>
+        <div class="mm-backbtn">Back</div>
+    </div>
+</nav>
+<header id="tt-header">
+    <div class="container">
+        <div class="row tt-row no-gutters">
+            <div class="col-auto">
+                <!-- toggle mobile menu -->
+                <a class="toggle-mobile-menu" href="#">
+                    <svg class="tt-icon">
+                        <use xlink:href="#icon-menu_icon"></use>
+                    </svg>
+                </a>
+                <!-- /toggle mobile menu -->
+                <!-- logo -->
+                <div class="tt-logo">
+                    <a href="/"><img src="../static/images/logo.png"></a>
+                </div>
+                <!-- /logo -->
+                <!-- desctop menu -->
+                <div class="tt-desktop-menu">
+                    <nav>
+                        <ul>
+                            <li><a href="/"><span>Home</span></a></li>
+                            <li><a href="/to_categories"><span>Categories</span></a></li>
+                            <li><a href="/message"><span>Leave a Message</span></a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <!-- /desctop menu -->
+                <!-- tt-search -->
+                <div class="tt-search">
+                    <!-- toggle -->
+                    <button class="tt-search-toggle" data-toggle="modal" data-target="#modalAdvancedSearch">
+                        <svg class="tt-icon">
+                            <use xlink:href="#icon-search"></use>
+                        </svg>
+                    </button>
+                    <!-- /toggle -->
+                    <form action="/search" class="search-wrapper">
+                        <div class="search-form">
+                            <input type="text" name="search"  class="tt-search__input" th:value="${keyword}">
+                            <button class="tt-search__btn" type="submit">
+                                <svg class="tt-icon">
+                                    <use xlink:href="#icon-search"></use>
+                                </svg>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /tt-search -->
+            </div>
+            <div class="col-auto ml-auto">
+                <div class="tt-user-info d-flex justify-content-center">
+                    <div th:if="${session.user != null}" style="margin-top: 5px">
+                        <a href="/personal/reply" class="tt-btn-icon">
+                            <i class="tt-icon"><svg><use xlink:href="#icon-notification"></use></svg></i>
+                            <span class="badge" th:text="${session.noticecount}"></span>
+                        </a>
+                        <input type="hidden" id="user_id" name="user_id" th:value="${session.user.user_id}">
+                    </div>
+                    <div class="tt-avatar-icon tt-size-md">
+                        <i class="tt-icon" th:if="${session.user.avatar==null}"><svg><use xlink:href="#icon-ava-d"></use></svg></i>
+                        <a href="#" th:if="${session.user.avatar!=null}">
+                            <img class="img-circle" style="width: 38px;height: 38px;margin-top: 5px" th:src="${session.user.avatar}">
+                        </a>
+                    </div>
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="dropdown" th:if="${session.user != null}">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" >
+                                    <span th:text="${session.user.getUsername()}"></span>
+                                    <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li th:if="${session.user.role_type==1}"><a href="/personal/question">我的问题</a></li>
+                                    <li><a href="/personal/reply">我的回复</a></li>
+                                    <li><a href="/personal/collect">我的收藏</a></li>
+                                    <li><a href="/logout" >登出</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
 <main id="tt-pageContent" class="tt-offset-small">
     <div class="container">
-        <div class="tt-topic-list" th:if="${option == 'question'}">
+        <div class="tt-topic-list">
             <div class="tt-list-header">
                 <div class="tt-col-topic">Topic</div>
                 <div class="tt-col-category">Category</div>
@@ -32,278 +131,51 @@
                 <div class="tt-col-value hide-mobile">Replies</div>
                 <div class="tt-col-value hide-mobile">Views</div>
             </div>
-            <h5 align="center" th:if="${questionList.isEmpty()==true}">你还没有发布任何问题，赶快点击右上角发布吧！</h5>
-            <div class="tt-item" th:each="question : ${questionList}">
+            <h5 align="center">没有内容</h5>
+            <br><br><br>
+        </div>
+        <!--<div class="tt-topic-list">-->
+            <!--<div class="tt-item tt-item-popup">-->
                 <!--<div class="tt-col-avatar">-->
-                    <!--<div class="tt-icon">-->
-                        <!--<svg class="tt-icon" th:if="${session.user.avatar==null}">-->
-                            <!--<use xlink:href="#icon-ava-d"></use>-->
-                        <!--</svg>-->
-                        <!--<div  th:if="${session.user.avatar!=null}">-->
-                            <!--<img class="img-circle" style="width: 38px;height: 38px;margin-top: 5px" th:src="${session.user.avatar}">-->
+                <!--</div>-->
+                <!--<div class="tt-col-message">-->
+                    <!--<h3 style="text-align: center">-&#45;&#45;&#45;&#45;&#45;&#45;热门问题&#45;&#45;&#45;&#45;&#45;&#45;</h3>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="tt-topic-list tt-ofset-30">-->
+            <!--<div class="tt-list-search">-->
+                <!--<div class="tt-title">Hot Topics</div>-->
+            <!--</div>-->
+            <!--<div class="tt-list-header tt-border-bottom">-->
+                <!--<div class="tt-col-topic">Topic</div>-->
+                <!--<div class="tt-col-category">Category</div>-->
+                <!--<div class="tt-col-value hide-mobile">Likes</div>-->
+                <!--<div class="tt-col-value hide-mobile">Replies</div>-->
+                <!--<div class="tt-col-value hide-mobile">Views</div>-->
+            <!--</div>-->
+            <!--<div class="tt-item" th:each="relate : ${relateQuestions}">-->
+                <!--<div class="tt-col-avatar">-->
+                    <!--<svg class="tt-icon">-->
+                        <!--<use xlink:href="#icon-ava-n"></use>-->
+                    <!--</svg>-->
+                <!--</div>-->
+                <!--<div class="tt-col-description">-->
+                    <!--<h6 class="tt-title" ><a th:href="@{'/getquestion?id='+${relate.id}}" th:text="${relate.title}"></a></h6>-->
+                    <!--<div class="row align-items-center no-gutters hide-desktope">-->
+                        <!--<div class="col-11">-->
+                            <!--<ul class="tt-list-badge">-->
+                                <!--<li class="show-mobile"><a href="#"><span class="tt-color05 tt-badge" th:text="${relate.category}"></span></a></li>-->
+                            <!--</ul>-->
                         <!--</div>-->
                     <!--</div>-->
                 <!--</div>-->
-                <div class="tt-col-description">
-                    <h6 class="tt-title"><a href="#">
-                        <a th:href="@{'/getquestion?id='+${question.id}}" th:text="${question.getTitle()}"></a>
-                    </a></h6>
-                    <div class="row align-items-center no-gutters">
-                        <div class="col-11">
-                            <ul class="tt-list-badge" th:each="tag : ${question.tag.split(',')}">
-                                <li class="show-mobile"><a href="#"><span class="tt-color04 tt-badge" ></span></a></li>
-                                <li><a th:href="@{'/findtag?tag='+${tag}}"><span class="tt-badge" th:text="${tag}"></span></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <a th:href="@{'/to_editpublish?id='+${question.id}}" class="little-menu" th:if="${session.user != null && question.creator == session.user.username}" style="font-size: 12px">
-                        <span class="glyphicon glyphicon-edit" aria-hidden="true" style="font-size: 12px"></span>
-                        修改提问
-                    </a>
-                    <input type="hidden" id="question_id" th:value="${question.id}">
-                    <a href="#" class="little-menu" th:if="${session.user != null && question.creator == session.user.username}" style="font-size: 12px" onclick="del()">
-                        <span class="glyphicon glyphicon-trash" aria-hidden="true" style="font-size: 12px"></span>
-                        删除
-                    </a>
-                </div>
-                <div class="tt-col-category"><span class="tt-color04 tt-badge" th:text="${question.category}"></span></div>
-                <div class="tt-col-value  hide-mobile" th:text="${question.likeCount}"></div>
-                <div class="tt-col-value tt-color-select  hide-mobile" th:text="${question.commentCount}"></div>
-                <div class="tt-col-value  hide-mobile" th:text="${question.viewCount}"></div>
-            </div>
-            <!--<div class="tt-item tt-item-popup">-->
-            <!--<div class="tt-col-avatar">-->
-            <!--<svg class="tt-icon">-->
-            <!--<use xlink:href="#icon-ava-f"></use>-->
-            <!--</svg>-->
+                <!--<div class="tt-col-category"><span class="tt-color05 tt-badge" th:text="${relate.category}"></span></div>-->
+                <!--<div class="tt-col-value hide-mobile">358</div>-->
+                <!--<div class="tt-col-value tt-color-select hide-mobile" th:text="${relate.commentCount}"></div>-->
+                <!--<div class="tt-col-value hide-mobile" th:text="${relate.viewCount}"></div>-->
             <!--</div>-->
-            <!--<div class="tt-col-message">-->
-            <!--Please Log in.-->
-            <!--</div>-->
-            <!--<div class="tt-col-btn">-->
-            <!--<button type="button" class="btn btn-primary">Log in</button>-->
-            <!--<button type="button" class="btn-icon">-->
-            <!--<svg class="tt-icon">-->
-            <!--<use xlink:href="#icon-cancel"></use>-->
-            <!--</svg>-->
-            <!--</button>-->
-            <!--</div>-->
-            <!--</div>-->
-            <nav aria-label="Page navigation">
-                <ul class="pagination">
-                    <li>
-                        <a href="/personal/question?pageNum=1" aria-label="Previous">
-                            <span aria-hidden="true">首页</span>
-                        </a>
-                    </li>
-                    <li th:if="${pageInfo.hasPreviousPage}">
-                        <a th:href="@{'/personal/question?pageNum='+${pageInfo.prePage}}">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    <li th:each="page:${pageInfo.navigatepageNums}"><a th:href="@{'/personal/question?pageNum='+${page}}" th:text="${page}" th:if="${page != pageInfo.pageNum}"></a>
-                        <span style="font-weight: bold;background: #6faed9;" th:if="${page == pageInfo.pageNum}" th:text="${page}"></span>
-                    </li>
-                    <li th:if="${pageInfo.hasNextPage}">
-                        <a th:href="@{'/personal/question?pageNum='+${pageInfo.nextPage}}">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a th:href="@{'/personal/question?pageNum='+${pageInfo.pages}}" aria-label="Next">
-                            <span aria-hidden="true">尾页</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-
-        <div class="tt-topic-list" th:if="${option == 'reply'}">
-            <div class="tt-list-header">
-                <div class="tt-col-topic">Topic</div>
-                <div class="tt-col-category">Category</div>
-                <div class="tt-col-value hide-mobile">Likes</div>
-                <div class="tt-col-value hide-mobile">Replies</div>
-                <div class="tt-col-value hide-mobile">Views</div>
-            </div>
-            <h5 align="center" th:if="${noticDTOList.isEmpty()==true}">你还没有任何回复，赶快去留言吧！</h5>
-            <div class="tt-item" th:each="notice : ${noticDTOList}">
-                <div class="tt-col-avatar">
-                    <div class="tt-icon">
-                        <svg class="tt-icon" th:if="${notice.user.avatar==null}">
-                            <use xlink:href="#icon-ava-d"></use>
-                        </svg>
-                        <div  th:if="${notice.user.avatar!=null}">
-                            <img class="img-circle" style="width: 38px;height: 38px;margin-top: 5px" th:src="${notice.user.avatar}">
-                        </div>
-                    </div>
-                </div>
-                <div class="tt-col-description">
-                    <h6 class="tt-title" th:if="${notice.type == 1 && notice.outerId==0}"><div>
-                        <span th:text="${notice.notifier_name}+' :'"></span><br><br><span>评论了您的问题:</span>
-                        <span  th:text="${notice.title}"></span>
-                        &nbsp;&nbsp;<span class="tt-color06 tt-badge" >此问题已被删除</span>
-                    </div></h6>
-                    <h6 class="tt-title" th:if="${notice.type == 1 && notice.outerId!=0}"><div>
-                        <span th:text="${notice.notifier_name}+' :'"></span><br><br><span>评论了您的问题:</span>
-                        <a th:href="@{/notice(q_id=${notice.outerId},n_id=${notice.id})}" th:text="${notice.title}"></a>
-                        &nbsp;&nbsp;<span class="label label-warning" th:if="${notice.status == 0}">未读</span>
-                    </div></h6>
-
-                    <h6 class="tt-title" th:if="${notice.type == 2 && notice.outerId==0}"><div>
-                        <span th:text="${notice.notifier_name}+' :'"></span><br><br><span>回复了您的评论：</span>
-                        <span  th:text="${notice.title}"></span>
-                        &nbsp;&nbsp;<span class="tt-color06 tt-badge" >此问题已被删除</span>
-                    </div></h6>
-                    <h6 class="tt-title" th:if="${notice.type == 2 && notice.outerId!=0}"><div>
-                        <span th:text="${notice.notifier_name}+' :'"></span><br><br><span>回复了您的评论：</span>
-                        <a th:href="@{/notice(q_id=${notice.outerId},n_id=${notice.id})}" th:text="${notice.title}"></a>
-                        &nbsp;&nbsp;<span class="label label-warning" th:if="${notice.status == 0}">未读</span>
-                    </div></h6>
-
-                    <h6 class="tt-title" th:if="${notice.type == 3 && notice.outerId==0}"><div>
-                        <span th:text="${notice.notifier_name}+' :'"></span><br><br><span>点赞了您的问题：</span>
-                        <span  th:text="${notice.title}"></span>
-                        &nbsp;&nbsp;<span class="tt-color06 tt-badge" >此问题已被删除</span>
-                    </div></h6>
-                    <h6 class="tt-title" th:if="${notice.type == 3 && notice.outerId!=0}"><div>
-                        <span th:text="${notice.notifier_name}+' :'"></span><br><br><span>点赞了您的评论：</span>
-                        <a th:href="@{/notice(q_id=${notice.outerId},n_id=${notice.id})}" th:text="${notice.title}"></a>
-                    </div></h6>
-
-                    <h6 class="tt-title" th:if="${notice.type == 4 && notice.outerId==0}"><div>
-                        <span th:text="${notice.notifier_name}+' :'"></span><br><br><span>邀请您解答疑问：</span>
-                        <span  th:text="${notice.title}"></span>
-                        &nbsp;&nbsp;<span class="tt-color06 tt-badge" >此问题已被删除</span>
-                    </div></h6>
-                    <h6 class="tt-title" th:if="${notice.type == 4 && notice.outerId!=0}"><div>
-                        <span th:text="${notice.notifier_name}+' :'"></span><br><br><span>邀请您解答疑问：</span>
-                        <a th:href="@{/notice(q_id=${notice.outerId},n_id=${notice.id})}" th:text="${notice.title}"></a>
-                        &nbsp;&nbsp;<span class="label label-warning" th:if="${notice.status == 0}">未读</span>
-                    </div></h6>
-
-                    <div class="row align-items-center no-gutters">
-                        <div class="col-11" th:if="${notice.outerId!=0 && notice.question.tag != null}">
-                            <ul class="tt-list-badge" th:each="tag : ${notice.question.tag.split(',')}">
-                                <li><a th:href="@{'/findtag?tag='+${tag}}"><span class="tt-badge" th:text="${tag}"></span></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="tt-col-category" th:if="${notice.outerId!=0}"><span class="tt-color04 tt-badge" th:text="${notice.question.category}"></span></div>
-                <div class="tt-col-value  hide-mobile" th:if="${notice.outerId!=0}" th:text="${notice.question.likeCount}"></div>
-                <div class="tt-col-value tt-color-select  hide-mobile" th:if="${notice.outerId!=0}" th:text="${notice.question.commentCount}"></div>
-                <div class="tt-col-value  hide-mobile" th:if="${notice.outerId!=0}" th:text="${notice.question.viewCount}"></div>
-            </div>
-            <!--<div class="tt-item tt-item-popup">-->
-            <!--<div class="tt-col-avatar">-->
-            <!--<svg class="tt-icon">-->
-            <!--<use xlink:href="#icon-ava-f"></use>-->
-            <!--</svg>-->
-            <!--</div>-->
-            <!--<div class="tt-col-message">-->
-            <!--Please Log in.-->
-            <!--</div>-->
-            <!--<div class="tt-col-btn">-->
-            <!--<button type="button" class="btn btn-primary">Log in</button>-->
-            <!--<button type="button" class="btn-icon">-->
-            <!--<svg class="tt-icon">-->
-            <!--<use xlink:href="#icon-cancel"></use>-->
-            <!--</svg>-->
-            <!--</button>-->
-            <!--</div>-->
-            <!--</div>-->
-            <nav aria-label="Page navigation">
-                <ul class="pagination">
-                    <li>
-                        <a href="/personal/reply?pageNum=1" aria-label="Previous">
-                            <span aria-hidden="true">首页</span>
-                        </a>
-                    </li>
-                    <li th:if="${pageInfo.hasPreviousPage}">
-                        <a th:href="@{'/personal/reply?pageNum='+${pageInfo.prePage}}">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    <li th:each="page:${pageInfo.navigatepageNums}"><a th:href="@{'/personal/reply?pageNum='+${page}}" th:text="${page}" th:if="${page != pageInfo.pageNum}"></a>
-                        <span style="font-weight: bold;background: #6faed9;" th:if="${page == pageInfo.pageNum}" th:text="${page}"></span>
-                    </li>
-                    <li th:if="${pageInfo.hasNextPage}">
-                        <a th:href="@{'/personal/reply?pageNum='+${pageInfo.nextPage}}">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a th:href="@{'/personal/reply?pageNum='+${pageInfo.pages}}" aria-label="Next">
-                            <span aria-hidden="true">尾页</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-
-        <div class="tt-topic-list" th:if="${option == 'collect'}">
-            <div class="tt-list-header">
-                <div class="tt-col-topic">Topic</div>
-                <div class="tt-col-category">Category</div>
-                <div class="tt-col-value hide-mobile">Likes</div>
-                <div class="tt-col-value hide-mobile">Replies</div>
-                <div class="tt-col-value hide-mobile">Views</div>
-            </div>
-                <h5 align="center" th:if="${questiocollectnList.isEmpty()==true}">你还没有任何收藏，赶快再去看看吧！</h5>
-            <div class="tt-item" th:each="question : ${questiocollectnList}">
-
-                <div class="tt-col-description">
-                    <h6 class="tt-title"><a href="#">
-                        <a th:href="@{'/getquestion?id='+${question.id}}" th:text="${question.getTitle()}"></a>
-                    </a></h6>
-                    <div class="row align-items-center no-gutters">
-                        <div class="col-11">
-                            <ul class="tt-list-badge" th:each="tag : ${question.tag.split(',')}">
-                                <li class="show-mobile"><a href="#"><span class="tt-color04 tt-badge" ></span></a></li>
-                                <li><a th:href="@{'/findtag?tag='+${tag}}"><span class="tt-badge" th:text="${tag}"></span></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <a href="#" class="little-menu" th:if="${session.user != null && question.creator == session.user.username}" style="font-size: 12px" th:onclick="'cancel('+${question.id}+')'">
-                        <span class="glyphicon glyphicon-star" aria-hidden="true" style="font-size: 12px"></span>
-                        取消收藏
-                    </a>
-                </div>
-                <div class="tt-col-category"><span class="tt-color04 tt-badge" th:text="${question.category}"></span></div>
-                <div class="tt-col-value  hide-mobile" th:text="${question.likeCount}"></div>
-                <div class="tt-col-value tt-color-select  hide-mobile" th:text="${question.commentCount}"></div>
-                <div class="tt-col-value  hide-mobile" th:text="${question.viewCount}"></div>
-            </div>
-
-            <nav aria-label="Page navigation" th:if="${questiocollectnList.isEmpty()!=true}">
-                <ul class="pagination">
-                    <li>
-                        <a href="/personal/question?pageNum=1" aria-label="Previous">
-                            <span aria-hidden="true">首页</span>
-                        </a>
-                    </li>
-                    <li th:if="${pageInfo.hasPreviousPage}">
-                        <a th:href="@{'/personal/collect?pageNum='+${pageInfo.prePage}}">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    <li th:each="page:${pageInfo.navigatepageNums}"><a th:href="@{'/personal/collect?pageNum='+${page}}" th:text="${page}" th:if="${page != pageInfo.pageNum}"></a>
-                        <span style="font-weight: bold;background: #6faed9;" th:if="${page == pageInfo.pageNum}" th:text="${page}"></span>
-                    </li>
-                    <li th:if="${pageInfo.hasNextPage}">
-                        <a th:href="@{'/personal/collect?pageNum='+${pageInfo.nextPage}}">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a th:href="@{'/personal/collect?pageNum='+${pageInfo.pages}}" aria-label="Next">
-                            <span aria-hidden="true">尾页</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
+        <!--</div>-->
     </div>
 </main>
 <div id="js-popup-settings" class="tt-popup-settings">
@@ -529,54 +401,7 @@
     </div>
 </div>
 <script src="../static/js/bundle.js"></script>
-<script>
-    function del() {
-        var question_id = $("#question_id").val();
-        var accept = confirm("确认删除？");
-        if (accept) {
-            $.ajax({
-                dataType: "json",
-                type: "POST",
-                url: "/delete",
-                data: {
-                    "id":question_id
-                },
-                success: function (data) {
-                    if (data > 0) {
-                        alert('删除成功');
-                        setTimeout(function () {
-                            parent.window.location.reload();
-                        },1000);
-                    } else {
-                        alert('删除失败');
-                        /*window.location.href = "to_supplyexaminelist";*/
-                        setTimeout(function () {
-                            parent.window.location.reload();
-                        },1000);
-                    }
-                }
-            });
-        }
 
-    }
-    function cancel(id) {
-        $.ajax({
-            url:'/cancelcollectioned',
-            type:'get',
-            data:{'id':id},
-            success:function (data) {
-                if(data=="已取消收藏~"){
-
-                    // document.getElementById("sc").innerText="收藏";
-                    alert(data);
-                }else if (data=="发生了一点小错误~请稍后再试"){
-                    alert(data);
-                }
-            }
-        });
-    }
-
-</script>
 <svg width="0" height="0" class="hidden">
     <symbol aria-hidden="true" data-prefix="fab" data-icon="facebook-f" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 264 512" id="facebook-f-brands">
         <path fill="currentColor" d="M215.8 85H264V3.6C255.7 2.5 227.1 0 193.8 0 124.3 0 76.7 42.4 76.7 120.3V192H0v91h76.7v229h94V283h73.6l11.7-91h-85.3v-62.7c0-26.3 7.3-44.3 45.1-44.3z"></path>

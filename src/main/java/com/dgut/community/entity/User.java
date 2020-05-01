@@ -12,6 +12,10 @@ public class User {
     private String address;
     private Integer role_type;
     private String avatar;
+    private String sex;
+    private String grade;
+    private String profession;
+    private String college;
     private Role role;
 
 }

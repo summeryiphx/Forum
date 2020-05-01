@@ -3,8 +3,10 @@ package com.dgut.community.controller;
 import com.dgut.community.dto.NoticeDTO;
 import com.dgut.community.entity.Notice;
 import com.dgut.community.entity.Question;
+import com.dgut.community.entity.QuestionCollect;
 import com.dgut.community.entity.User;
 import com.dgut.community.mapper.NoticeMapper;
+import com.dgut.community.mapper.QuestionCollectMapper;
 import com.dgut.community.mapper.QuestionMapper;
 import com.dgut.community.mapper.UserMapper;
 import com.github.pagehelper.PageHelper;
@@ -30,6 +32,8 @@ public class PersonalController {
 
     @Autowired
     UserMapper userMapper;
+    @Autowired
+    QuestionCollectMapper questionCollectMapper;
 
     @RequestMapping("/personal/{action}")
     public String Personal(@PathVariable(name = "action") String action, Model model,HttpSession session,@RequestParam(required = false,defaultValue = "1") Integer pageNum){
@@ -56,9 +60,11 @@ public class PersonalController {
             List<Notice> noticDTOList = new ArrayList<>();
             for ( Notice notice : noticeList){
                 User user1 = userMapper.findByUserid(notice.getNotifier());
-                Question question = questionMapper.findById(notice.getOuterId());
+                if (notice.getOuterId() !=0){
+                    Question question = questionMapper.findById(notice.getOuterId());
+                    notice.setQuestion(question);
+                }
                 notice.setUser(user1);
-                notice.setQuestion(question);
                 noticDTOList.add(notice);
             }
 
@@ -67,6 +73,23 @@ public class PersonalController {
             model.addAttribute("noticDTOList",noticDTOList);
 
             return "personal";
+        }
+        if ("collect".equals(action)){
+            model.addAttribute("option","collect");
+            model.addAttribute("optionName","我的收藏");
+            User user = (User) session.getAttribute("user");
+
+            PageHelper.startPage(pageNum,10);
+            List<QuestionCollect> questionCollects = questionCollectMapper.findByUserID(user.getUser_id());
+            PageInfo pageInfo = new PageInfo<>(questionCollects,5);
+
+            List<Question> questionList = new ArrayList<>();
+            for (QuestionCollect questionCollect : questionCollects){
+                Question question = questionMapper.findById(questionCollect.getQuestion_id());
+                questionList.add(question);
+            }
+            model.addAttribute("pageInfo",pageInfo);
+            model.addAttribute("questiocollectnList",questionList);
         }
         return "personal";
     }

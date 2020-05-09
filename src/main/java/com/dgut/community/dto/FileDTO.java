@@ -7,7 +7,7 @@ public class FileDTO {
 
     /**
      * success : 0 | 1
-     * message : 提示的信息，上传成功或上传失败及错误信息等。
+     * Message : 提示的信息，上传成功或上传失败及错误信息等。
      * url : 图片地址
      */
 

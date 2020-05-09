@@ -26,14 +26,21 @@ public class LoginController {
     @ResponseBody
     public int login(String account_id, String password , HttpSession session, HttpServletRequest request, Model model){
         User user=userMapper.findUser(account_id,password);
-        if (user != null){
+        if (user != null && (user.getRole_type()==1 || user.getRole_type()==2)){
             session.setAttribute("user",user);
             int noticecount = noticeMapper.noticecount(user.getUser_id());
             session.setAttribute("noticecount",noticecount);
 
             return 1;
-        }else{
-            return -1;
+        }else if (user != null && user.getRole_type()==3){
+            session.setAttribute("user",user);
+            return 2;
+        }else if (user != null && user.getRole_type()==14){
+            return 3;
+        }else if (user != null && user.getRole_type()==24){
+            return 3;
+        }else {
+            return 0;
         }
 
     }

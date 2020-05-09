@@ -25,4 +25,16 @@
     <delete id="deleteByparentid" parameterType="int">
         delete from comment where parent_id=#{id}
     </delete>
+    <delete id="delsecond" parameterType="int">
+        delete from comment where secomment_id=#{cid}
+    </delete>
+    <select id="count" resultType="int">
+        select count(*) from comment
+    </select>
+    <select id="findAll" resultType="Comment">
+        select * from comment
+    </select>
+    <update id="updatecontent">
+        update comment set content=#{content} where id=#{id}
+    </update>
 </mapper>

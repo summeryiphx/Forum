@@ -1,26 +1,17 @@
 package com.dgut.community.controller;
 
 import com.dgut.community.Utils.JsonResult;
+import com.dgut.community.Utils.MdUtil;
 import com.dgut.community.cache.TagCache;
-import com.dgut.community.dto.TagDTO;
-import com.dgut.community.entity.Notice;
-import com.dgut.community.entity.Question;
-import com.dgut.community.entity.Teacher;
-import com.dgut.community.entity.User;
-import com.dgut.community.mapper.NoticeMapper;
-import com.dgut.community.mapper.QuestionMapper;
-import com.dgut.community.mapper.TeacherMapper;
-import com.dgut.community.mapper.UserMapper;
+import com.dgut.community.entity.*;
+import com.dgut.community.mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
@@ -36,6 +27,9 @@ public class PublishController {
 
     @Autowired
     NoticeMapper noticeMapper;
+
+    @Autowired
+    CategoryMapper categoryMapper;
 
 //    @GetMapping("/publish")
 //    public ModelAndView publish(String creator, Model model){
@@ -56,6 +50,7 @@ public class PublishController {
 
         question.setGmtCreate(System.currentTimeMillis());
         question.setGmtModified(question.getGmtCreate());
+        question.setContent(MdUtil.MdToHtml(question.getContent()));
         questionMapper.CreateQuestion(question);
 
         Notice notice = new Notice();
@@ -94,8 +89,9 @@ public class PublishController {
 
     @GetMapping("/category")
     @ResponseBody
-    public JsonResult<Teacher> category(){
-        return JsonResult.success(teacherMapper.selectcatgegory());
+    public JsonResult<Xueke> category(){
+
+        return JsonResult.success(categoryMapper.selectcategory());
     }
     @GetMapping("/teacher")
     @ResponseBody

@@ -72,7 +72,7 @@ public class IndexController {
     @RequestMapping("/home")
     public String Index( HttpSession session,Model model,@RequestParam(required = false,defaultValue = "1") Integer pageNum){
 //        question1是带有User question2是不带有User
-        PageHelper.startPage(pageNum,15);
+        PageHelper.startPage(pageNum,10);
         List<Question> questionList2=questionMapper.findAll();
         PageInfo pageInfo = new PageInfo<>(questionList2,5);
 

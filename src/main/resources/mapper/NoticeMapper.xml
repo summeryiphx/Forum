@@ -16,4 +16,13 @@
     <update id="updateOuterID" parameterType="int">
         update notice set outerId = 0 where outerId = #{id}
     </update>
+    <update id="updateNoticerName">
+         update notice set notifier_name=#{username} where notifier_name=#{name}
+    </update>
+    <select id="finddelay" resultType="Notice">
+        select * from notice where type=4 and status=0
+    </select>
+    <select id="findMyNotice" parameterType="int" resultType="Notice">
+        select * from notice where notifier=#{user_id} order by gmt_create desc
+    </select>
 </mapper>

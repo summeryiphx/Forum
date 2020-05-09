@@ -72,85 +72,6 @@
                 <div class="tt-col-value hide-mobile">Views</div>
             </div>
 
-            <div class="tt-item tt-itemselect" >
-                <div class="tt-col-avatar">
-                    <svg class="tt-icon">
-                      <use xlink:href="#icon-ava-k"></use>
-                    </svg>
-                </div>
-                <div class="tt-col-description">
-                    <h6 class="tt-title"><a href="question-view.html">
-                        <svg class="tt-icon">
-                          <use xlink:href="#icon-pinned"></use>
-                        </svg>
-                        Halloween Costume Contest 2018
-                    </a></h6>
-                    <div class="row align-items-center no-gutters">
-                        <div class="col-11">
-                            <ul class="tt-list-badge">
-                                <li class="show-mobile"><a href="#"><span class="tt-color01 tt-badge">politics</span></a></li>
-                                <li><a href="#"><span class="tt-badge">contests</span></a></li>
-                                <li><a href="#"><span class="tt-badge">authors</span></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="tt-col-category"><span class="tt-color01 tt-badge">politics</span></div>
-                <div class="tt-col-value hide-mobile">985</div>
-                <div class="tt-col-value tt-color-select hide-mobile">502</div>
-                <div class="tt-col-value hide-mobile">15.1k</div>
-            </div>
-            <div class="tt-item tt-itemselect">
-                <div class="tt-col-avatar">
-                    <svg class="tt-icon">
-                      <use xlink:href="#icon-ava-l"></use>
-                    </svg>
-                </div>
-                <div class="tt-col-description">
-                    <h6 class="tt-title"><a href="question-view.html">
-                        <svg class="tt-icon">
-                          <use xlink:href="#icon-locked"></use>
-                        </svg>
-                        We’re removing Envato Credits from Market
-                    </a></h6>
-                    <div class="row align-items-center no-gutters  hide-desktope">
-                        <div class="col-11">
-                           <ul class="tt-list-badge">
-                               <li class="show-mobile"><a href="#"><span class="tt-color02 tt-badge">video</span></a></li>
-                           </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="tt-col-category"><span class="tt-color02 tt-badge">video</span></div>
-                <div class="tt-col-value hide-mobile">584</div>
-                <div class="tt-col-value tt-color-select  hide-mobile">35</div>
-                <div class="tt-col-value hide-mobile">1.3k</div>
-            </div>
-            <div class="tt-item tt-itemselect">
-                <div class="tt-col-avatar">
-                    <svg class="tt-icon">
-                      <use xlink:href="#icon-ava-d"></use>
-                    </svg>
-                </div>
-                <div class="tt-col-description">
-                    <h6 class="tt-title"><a href="question-view.html">
-                        Web Hosting Packages for ThemeForest WordPress
-                    </a></h6>
-                    <div class="row align-items-center no-gutters">
-                        <div class="col-11">
-                            <ul class="tt-list-badge">
-                                <li class="show-mobile"><a href="#"><span class="tt-color03 tt-badge">exchange</span></a></li>
-                                <li><a href="#"><span class="tt-badge">themeforest</span></a></li>
-                                <li><a href="#"><span class="tt-badge">elements</span></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="tt-col-category"><span class="tt-color03 tt-badge">exchange</span></div>
-                <div class="tt-col-value  hide-mobile">401</div>
-                <div class="tt-col-value tt-color-select  hide-mobile">975</div>
-                <div class="tt-col-value  hide-mobile">12.6k</div>
-            </div>
             <div class="tt-item" th:each="question : ${question1}">
                 <div class="tt-col-avatar">
                     <svg class="tt-icon" th:if="${question.user.avatar==null}">
@@ -256,24 +177,21 @@
 			</div>
 		</div>
 		<div class="form-group">
-		    <label for="settingsUserName">Username</label>
-		   <input type="text" name="username" class="form-control" id="settingsUserName" th:value="${session.user.username}">
+		    <label for="username">Username</label>
+		   <input type="text" name="username" class="form-control" id="username" maxlength="10" th:value="${session.user.username}">
 		</div>
 		<div class="form-group">
-		    <label for="settingsUserEmail">Phone</label>
-		   <input type="text" name="phone" class="form-control" id="settingsUserEmail" placeholder="Sample@sample.com">
+		    <label for="mail">E-mail</label>
+		   <input type="text" name="mail" class="form-control" id="mail" th:value="${session.user.mail}">
 		</div>
+        <input type="hidden" id="userid" th:value="${session.user.user_id}">
 		<div class="form-group">
-		    <label for="settingsUserPassword">Password</label>
-		   <input type="password" name="password" class="form-control" id="settingsUserPassword" placeholder="************">
-		</div>
-		<div class="form-group">
-			<button type="submit" class="btn btn-secondary">Save</button>
+			<button type="submit" id="submit" class="btn btn-secondary">Save</button>
 		</div>
 		</form>
 </div>
 <a th:href="@{'/publish?creator='+${session.user.username}}" class="tt-btn-create-topic">
-    <span class="tt-icon">
+    <span class="tt-icon" th:if="${session.user.role_type!=2}">
         <svg>
           <use xlink:href="#icon-create_new"></use>
         </svg>
@@ -407,6 +325,7 @@
 </div>
 <script src="../static/js/bundle.js"></script>
 <script src="../static/js/upload.js"></script>
+<script src="../static/js/info.js"></script>
 <svg width="0" height="0" class="hidden">
 	 <symbol aria-hidden="true" data-prefix="fab" data-icon="facebook-f" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 264 512" id="facebook-f-brands">
     <path fill="currentColor" d="M215.8 85H264V3.6C255.7 2.5 227.1 0 193.8 0 124.3 0 76.7 42.4 76.7 120.3V192H0v91h76.7v229h94V283h73.6l11.7-91h-85.3v-62.7c0-26.3 7.3-44.3 45.1-44.3z"></path>

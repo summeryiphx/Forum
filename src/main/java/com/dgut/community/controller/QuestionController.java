@@ -49,6 +49,7 @@ public class QuestionController {
     @Autowired
     NoticeMapper noticeMapper;
 
+
     @RequestMapping("/getquestion")
     public String GetQuestion(Integer id, Model model, HttpSession session){
         Question question=questionMapper.findById(id);
@@ -148,9 +149,11 @@ public class QuestionController {
     @RequestMapping(value = "/delete",method = RequestMethod.POST)
     @ResponseBody
     public int delete(Integer id){
+        System.out.println(id);
         commentMapper.deleteByparentid(id);
         int row = questionMapper.del(id);
         noticeMapper.updateOuterID(id);
+        questionCollectMapper.updateQuestionID(id);
         return row;
     }
 }

@@ -43,4 +43,14 @@ public interface QuestionMapper {
     int updateLikeNum(Question question);
 
     List<Question> findByTag(String tag);
+
+    int updateUsername(@Param("name") String name,@Param("username") String username);
+
+    int count();
+
+    List<Question> findByCategory(String action);
+
+    List<Question> findBytitle(String title);
+
+    int updatecontent(@Param("id") Integer id, @Param("content") String content);
 }

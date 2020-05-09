@@ -276,24 +276,21 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="settingsUserName">Username</label>
-            <input type="text" name="username" class="form-control" id="settingsUserName" th:value="${session.user.username}">
+            <label for="username">Username</label>
+            <input type="text" name="username" class="form-control" id="username" maxlength="10" th:value="${session.user.username}">
         </div>
         <div class="form-group">
-            <label for="settingsUserEmail">Phone</label>
-            <input type="text" name="phone" class="form-control" id="settingsUserEmail" placeholder="Sample@sample.com">
+            <label for="mail">E-mail</label>
+            <input type="text" name="mail" class="form-control" id="mail" th:value="${session.user.mail}">
         </div>
+        <input type="hidden" id="userid" th:value="${session.user.user_id}">
         <div class="form-group">
-            <label for="settingsUserPassword">Password</label>
-            <input type="password" name="password" class="form-control" id="settingsUserPassword" placeholder="************">
-        </div>
-        <div class="form-group">
-            <button type="submit" class="btn btn-secondary">Save</button>
+            <button type="submit" id="submit" class="btn btn-secondary">Save</button>
         </div>
     </form>
 </div>
 <a th:href="@{'/publish?creator='+${session.user.username}}" class="tt-btn-create-topic">
-    <span class="tt-icon">
+    <span class="tt-icon" th:if="${session.user.role_type!=2}">
         <svg>
           <use xlink:href="#icon-create_new"></use>
         </svg>
@@ -427,6 +424,7 @@
 </div>
 <script src="../static/js/bundle.js"></script>
 <script src="../static/js/upload.js"></script>
+<script src="../static/js/info.js"></script>
 <svg width="0" height="0" class="hidden">
     <symbol aria-hidden="true" data-prefix="fab" data-icon="facebook-f" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 264 512" id="facebook-f-brands">
         <path fill="currentColor" d="M215.8 85H264V3.6C255.7 2.5 227.1 0 193.8 0 124.3 0 76.7 42.4 76.7 120.3V192H0v91h76.7v229h94V283h73.6l11.7-91h-85.3v-62.7c0-26.3 7.3-44.3 45.1-44.3z"></path>

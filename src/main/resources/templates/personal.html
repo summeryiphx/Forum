@@ -60,8 +60,7 @@
                         <span class="glyphicon glyphicon-edit" aria-hidden="true" style="font-size: 12px"></span>
                         修改提问
                     </a>
-                    <input type="hidden" id="question_id" th:value="${question.id}">
-                    <a href="#" class="little-menu" th:if="${session.user != null && question.creator == session.user.username}" style="font-size: 12px" onclick="del()">
+                    <a href="#" class="little-menu"  style="font-size: 12px" th:onclick="'del('+${question.id}+')'">
                         <span class="glyphicon glyphicon-trash" aria-hidden="true" style="font-size: 12px"></span>
                         删除
                     </a>
@@ -77,7 +76,7 @@
             <!--<use xlink:href="#icon-ava-f"></use>-->
             <!--</svg>-->
             <!--</div>-->
-            <!--<div class="tt-col-message">-->
+            <!--<div class="tt-col-Message">-->
             <!--Please Log in.-->
             <!--</div>-->
             <!--<div class="tt-col-btn">-->
@@ -152,12 +151,12 @@
 
                     <h6 class="tt-title" th:if="${notice.type == 2 && notice.outerId==0}"><div>
                         <span th:text="${notice.notifier_name}+' :'"></span><br><br><span>回复了您的评论：</span>
-                        <span  th:text="${notice.title}"></span>
+                        <span  th:utext="${notice.title}"></span>
                         &nbsp;&nbsp;<span class="tt-color06 tt-badge" >此问题已被删除</span>
                     </div></h6>
                     <h6 class="tt-title" th:if="${notice.type == 2 && notice.outerId!=0}"><div>
                         <span th:text="${notice.notifier_name}+' :'"></span><br><br><span>回复了您的评论：</span>
-                        <a th:href="@{/notice(q_id=${notice.outerId},n_id=${notice.id})}" th:text="${notice.title}"></a>
+                        <a th:href="@{/notice(q_id=${notice.outerId},n_id=${notice.id})}" th:utext="${notice.title}"></a>
                         &nbsp;&nbsp;<span class="label label-warning" th:if="${notice.status == 0}">未读</span>
                     </div></h6>
 
@@ -201,7 +200,7 @@
             <!--<use xlink:href="#icon-ava-f"></use>-->
             <!--</svg>-->
             <!--</div>-->
-            <!--<div class="tt-col-message">-->
+            <!--<div class="tt-col-Message">-->
             <!--Please Log in.-->
             <!--</div>-->
             <!--<div class="tt-col-btn">-->
@@ -242,6 +241,86 @@
             </nav>
         </div>
 
+        <div class="tt-topic-list" th:if="${option == 'myreply'}">
+            <div class="tt-list-header">
+                <div class="tt-col-topic">Topic</div>
+                <div class="tt-col-category">Category</div>
+                <div class="tt-col-value hide-mobile">Likes</div>
+                <div class="tt-col-value hide-mobile">Replies</div>
+                <div class="tt-col-value hide-mobile">Views</div>
+            </div>
+            <h5 align="center" th:if="${noticDTOList.isEmpty()==true}">你还没有任何回复，赶快去留言吧！</h5>
+            <div class="tt-item" th:each="notice : ${noticDTOList}">
+                <div class="tt-col-avatar">
+                    <div class="tt-icon">
+                        <svg class="tt-icon" th:if="${session.user.avatar==null}">
+                            <use xlink:href="#icon-ava-d"></use>
+                        </svg>
+                        <div  th:if="${session.user.avatar!=null}">
+                            <img class="img-circle" style="width: 38px;height: 38px;margin-top: 5px" th:src="${session.user.avatar}">
+                        </div>
+                    </div>
+                </div>
+                <div class="tt-col-description">
+                    <h6 class="tt-title" th:if="${notice.type == 1 && notice.outerId!=0}"><div>
+                        <span >我</span><br><br><span>评论了:</span>
+                        <a th:href="@{/notice(q_id=${notice.outerId},n_id=${notice.id})}" th:text="${notice.title}"></a>
+                    </div></h6>
+
+                    <h6 class="tt-title" th:if="${notice.type == 2 && notice.outerId!=0}"><div>
+                        <span >我</span><br><br><span>回复了评论：</span>
+                        <a th:href="@{/notice(q_id=${notice.outerId},n_id=${notice.id})}" th:utext="${notice.title}"></a>
+                    </div></h6>
+
+                    <h6 class="tt-title" th:if="${notice.type == 3 && notice.outerId!=0}"><div>
+                        <span >我</span><br><br><span>点赞了评论：</span>
+                        <a th:href="@{/notice(q_id=${notice.outerId},n_id=${notice.id})}" th:text="${notice.title}"></a>
+                    </div></h6>
+
+
+                    <div class="row align-items-center no-gutters">
+                        <div class="col-11" th:if="${notice.outerId!=0 && notice.question.tag != null}">
+                            <ul class="tt-list-badge" th:each="tag : ${notice.question.tag.split(',')}">
+                                <li><a th:href="@{'/findtag?tag='+${tag}}"><span class="tt-badge" th:text="${tag}"></span></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="tt-col-category" th:if="${notice.outerId!=0}"><span class="tt-color04 tt-badge" th:text="${notice.question.category}"></span></div>
+                <div class="tt-col-value  hide-mobile" th:if="${notice.outerId!=0}" th:text="${notice.question.likeCount}"></div>
+                <div class="tt-col-value tt-color-select  hide-mobile" th:if="${notice.outerId!=0}" th:text="${notice.question.commentCount}"></div>
+                <div class="tt-col-value  hide-mobile" th:if="${notice.outerId!=0}" th:text="${notice.question.viewCount}"></div>
+            </div>
+
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <li>
+                        <a href="/personal/myreply?pageNum=1" aria-label="Previous">
+                            <span aria-hidden="true">首页</span>
+                        </a>
+                    </li>
+                    <li th:if="${pageInfo.hasPreviousPage}">
+                        <a th:href="@{'/personal/myreply?pageNum='+${pageInfo.prePage}}">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li th:each="page:${pageInfo.navigatepageNums}"><a th:href="@{'/personal/myreply?pageNum='+${page}}" th:text="${page}" th:if="${page != pageInfo.pageNum}"></a>
+                        <span style="font-weight: bold;background: #6faed9;" th:if="${page == pageInfo.pageNum}" th:text="${page}"></span>
+                    </li>
+                    <li th:if="${pageInfo.hasNextPage}">
+                        <a th:href="@{'/personal/myreply?pageNum='+${pageInfo.nextPage}}">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a th:href="@{'/personal/myreply?pageNum='+${pageInfo.pages}}" aria-label="Next">
+                            <span aria-hidden="true">尾页</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
         <div class="tt-topic-list" th:if="${option == 'collect'}">
             <div class="tt-list-header">
                 <div class="tt-col-topic">Topic</div>
@@ -250,33 +329,37 @@
                 <div class="tt-col-value hide-mobile">Replies</div>
                 <div class="tt-col-value hide-mobile">Views</div>
             </div>
-                <h5 align="center" th:if="${questiocollectnList.isEmpty()==true}">你还没有任何收藏，赶快再去看看吧！</h5>
-            <div class="tt-item" th:each="question : ${questiocollectnList}">
+                <h5 align="center" th:if="${CollectList.isEmpty()==true}">你还没有任何收藏，赶快再去看看吧！</h5>
+            <div class="tt-item" th:each="collect : ${CollectList}">
 
                 <div class="tt-col-description">
-                    <h6 class="tt-title"><a href="#">
-                        <a th:href="@{'/getquestion?id='+${question.id}}" th:text="${question.getTitle()}"></a>
+                    <h6 class="tt-title" th:if="${collect.question_id!=0}"><a href="#">
+                        <a th:href="@{'/getquestion?id='+${collect.question_id}}" th:text="${collect.title}"></a>
                     </a></h6>
-                    <div class="row align-items-center no-gutters">
+                    <h6 class="tt-title" th:if="${collect.question_id == 0}">
+                        <span  th:text="${collect.title}"></span>
+                        &nbsp;&nbsp;<span class="tt-color06 tt-badge" >此问题已被删除</span>
+                    </h6>
+                    <div class="row align-items-center no-gutters" th:if="${collect.question_id != 0}">
                         <div class="col-11">
-                            <ul class="tt-list-badge" th:each="tag : ${question.tag.split(',')}">
+                            <ul class="tt-list-badge" th:each="tag : ${collect.question.tag.split(',')}">
                                 <li class="show-mobile"><a href="#"><span class="tt-color04 tt-badge" ></span></a></li>
                                 <li><a th:href="@{'/findtag?tag='+${tag}}"><span class="tt-badge" th:text="${tag}"></span></a></li>
                             </ul>
                         </div>
                     </div>
-                    <a href="#" class="little-menu" th:if="${session.user != null && question.creator == session.user.username}" style="font-size: 12px" th:onclick="'cancel('+${question.id}+')'">
+                    <a href="#" class="little-menu"  style="font-size: 12px" th:onclick="'cancel('+${collect.question_id}+')'">
                         <span class="glyphicon glyphicon-star" aria-hidden="true" style="font-size: 12px"></span>
                         取消收藏
                     </a>
                 </div>
-                <div class="tt-col-category"><span class="tt-color04 tt-badge" th:text="${question.category}"></span></div>
-                <div class="tt-col-value  hide-mobile" th:text="${question.likeCount}"></div>
-                <div class="tt-col-value tt-color-select  hide-mobile" th:text="${question.commentCount}"></div>
-                <div class="tt-col-value  hide-mobile" th:text="${question.viewCount}"></div>
+                <div class="tt-col-category" th:if="${collect.question_id != 0}"><span class="tt-color04 tt-badge"  th:text="${collect.question.category}"></span></div>
+                <div class="tt-col-value  hide-mobile" th:if="${collect.question_id != 0}" th:text="${collect.question.likeCount}"></div>
+                <div class="tt-col-value tt-color-select  hide-mobile" th:if="${collect.question_id != 0}" th:text="${collect.question.commentCount}"></div>
+                <div class="tt-col-value  hide-mobile" th:if="${collect.question_id != 0}" th:text="${collect.question.viewCount}"></div>
             </div>
 
-            <nav aria-label="Page navigation" th:if="${questiocollectnList.isEmpty()!=true}">
+            <nav aria-label="Page navigation" th:if="${CollectList.isEmpty()!=true}">
                 <ul class="pagination">
                     <li>
                         <a href="/personal/question?pageNum=1" aria-label="Previous">
@@ -396,7 +479,7 @@
     </form>
 </div>
 <a th:href="@{'/publish?creator='+${session.user.username}}" class="tt-btn-create-topic">
-    <span class="tt-icon">
+    <span class="tt-icon" th:if="${session.user.role_type!=2}">
         <svg>
           <use xlink:href="#icon-create_new"></use>
         </svg>
@@ -530,8 +613,7 @@
 </div>
 <script src="../static/js/bundle.js"></script>
 <script>
-    function del() {
-        var question_id = $("#question_id").val();
+    function del(id) {
         var accept = confirm("确认删除？");
         if (accept) {
             $.ajax({
@@ -539,7 +621,7 @@
                 type: "POST",
                 url: "/delete",
                 data: {
-                    "id":question_id
+                    "id":id
                 },
                 success: function (data) {
                     if (data > 0) {
@@ -566,9 +648,10 @@
             data:{'id':id},
             success:function (data) {
                 if(data=="已取消收藏~"){
-
-                    // document.getElementById("sc").innerText="收藏";
                     alert(data);
+                    setTimeout(function () {
+                        parent.window.location.reload();
+                    },1000);
                 }else if (data=="发生了一点小错误~请稍后再试"){
                     alert(data);
                 }

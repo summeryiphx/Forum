@@ -10,10 +10,14 @@ function f(id) {
 }
 
 function fa(i) {
+    var title = $("#title").val();
     $.ajax({
         url:'/collection',
         type:'get',
-        data:{'id':i},
+        data:{
+            'id':i,
+            "title":title
+        },
         success:function (data) {
             if (data=="收藏成功~"){
                 document.getElementById("sc").setAttribute("class","glyphicon glyphicon-star");

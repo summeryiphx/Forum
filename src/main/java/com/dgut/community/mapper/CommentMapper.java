@@ -2,6 +2,7 @@ package com.dgut.community.mapper;
 
 import com.dgut.community.entity.Comment;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -25,4 +26,12 @@ public interface CommentMapper {
     int del(Integer id);
 
     int deleteByparentid(Integer id);
+
+    void delsecond(Integer cid);
+
+    int count();
+
+    List<Comment> findAll();
+
+    void updatecontent(@Param("id") Integer id, @Param("content") String content);
 }

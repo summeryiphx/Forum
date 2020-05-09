@@ -13,4 +13,22 @@
     <update id="updateAvatar">
         update user set avatar = #{avatar} where user_id = #{user_id}
     </update>
+    <update id="updateinfo">
+        update user set username=#{username},mail=#{mail} where user_id=#{id}
+    </update>
+    <select id="count" resultType="int">
+        select count(*) from user
+    </select>
+    <select id="findByrole" resultType="User">
+        select * from user where role_type=#{role} or role_type=#{stop}
+    </select>
+    <update id="changerole">
+         update user set role_type=#{role} where user_id=#{id}
+    </update>
+    <delete id="deluser">
+        delete from user where user_id=#{id}
+    </delete>
+    <select id="findByNameList" parameterType="String" resultType="User">
+        select * from user where username like concat('%',#{username},'%')
+    </select>
 </mapper>

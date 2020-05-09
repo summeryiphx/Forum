@@ -41,7 +41,23 @@ public class TagController {
         return "tag";
     }
 
+    @RequestMapping("/findcategory")
+    public String findcategory(String category, Model model,@RequestParam(required = false,defaultValue = "1") Integer pageNum){
+        PageHelper.startPage(pageNum,15);
+        List<Question> questionList = questionMapper.findByCategory(category);
+        PageInfo pageInfo = new PageInfo<>(questionList,5);
 
+        List<Question> questionList1=new ArrayList<>();
+        for (Question question:questionList){
+            User user=userMapper.findByName(question.getCreator());
+            question.setUser(user);
+            questionList1.add(question);
+        }
+        model.addAttribute("question1",questionList1);
+        model.addAttribute("pageInfo",pageInfo);
+        model.addAttribute("category",category);
+        return "category";
+    }
 
 
 

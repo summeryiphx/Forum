@@ -100,9 +100,14 @@
                 "password":password
             },
             success:function (data) {
-                if (data>0){
+                console.log(data);
+                if (data==1){
                     window.location.href = "/home";
-                } else {
+                } else if (data == 2) {
+                    window.location.href = "/back";
+                }else if (data == 3) {
+                    alert("该账号已被停用");
+                }else {
                     alert("用户名或密码错误");
                 }
             }

@@ -45,13 +45,14 @@
             <h1 class="tt-title-border">
                 Leave a Message
             </h1>
-            <form class="form-default form-create-topic" action="/cque" id="questionForm">
+            <form class="form-default form-create-topic" action="/message" id="questionForm">
                 <div class="form-group">
                     <label for="title">Message Title</label>
                     <div class="tt-value-wrapper">
                         <input type="text" class="form-control" id="title" name="title" placeholder="请输入留言标题·" autocomplete="off">
                         <span class="tt-value-input">99</span>
                     </div>
+                    <input type="hidden" id="user_id" name="user_id" th:value="${session.user.user_id}">
                     <div class="tt-note">Describe your topic well, while keeping the subject as short as possible.</div>
                 </div>
                 <div class="form-group">
@@ -190,7 +191,7 @@
     </form>
 </div>
 <a th:href="@{'/publish?creator='+${session.user.username}}" class="tt-btn-create-topic">
-    <span class="tt-icon">
+    <span class="tt-icon" th:if="${session.user.role_type!=2}">
         <svg>
           <use xlink:href="#icon-create_new"></use>
         </svg>
@@ -336,7 +337,11 @@
             alert("内容不能为空");
             return false;
         }
-        $("#questionForm").submit();
+        var accept = confirm("确认提交？");
+        if (accept) {
+            $("#questionForm").submit();
+        }
+
     }
 
 </script>

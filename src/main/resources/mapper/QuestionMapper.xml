@@ -56,4 +56,19 @@
     <select id="findByTag" parameterType="String" resultType="Question">
          select * from question where tag like concat('%',#{tag},'%')
     </select>
+    <update id="updateUsername">
+        update question set creator=#{username} where creator=#{name}
+    </update>
+    <select id="count" resultType="int">
+        select count(*) from question
+    </select>
+    <select id="findByCategory" resultType="Question">
+        select * from question where category=#{action}
+    </select>
+    <select id="findBytitle" parameterType="String" resultType="Question">
+         select * from question where title like concat('%',#{title},'%')
+    </select>
+    <update id="updatecontent">
+        update question set content=#{content} where id=#{id}
+    </update>
 </mapper>

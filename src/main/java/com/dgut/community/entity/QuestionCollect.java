@@ -7,4 +7,6 @@ public class QuestionCollect {
     private Integer id;
     private Integer user_id;
     private Integer question_id;
+    private String title;
+    private Question question;
 }

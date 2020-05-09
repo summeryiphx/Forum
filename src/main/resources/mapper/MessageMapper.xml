@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?> <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dgut.community.mapper.MessageMapper">
+    <insert id="insert" parameterType="Message">
+        INSERT INTO  message (user_id,content,title,gmtCreate) VALUES(#{user_id},#{content},#{title},#{gmtCreate});
+    </insert>
+    <select id="findAll" resultType="Message">
+        select * from message order by gmtCreate desc
+    </select>
+    <delete id="del" parameterType="int">
+        delete from message where id=#{id}
+    </delete>
+</mapper>

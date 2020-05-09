@@ -17,9 +17,9 @@ public class QuestionCollectController {
 
     @ResponseBody
     @RequestMapping("/collection")
-    public String collection(Integer id, HttpSession session){
+    public String collection(Integer id,String title ,HttpSession session){
         User user =(User) session.getAttribute("user");
-        int row = questionCollectMapper.collect(user.getUser_id(),id);
+        int row = questionCollectMapper.collect(user.getUser_id(),id,title);
         if (row>0){
             return "收藏成功~";
         }else {

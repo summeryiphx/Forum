@@ -1,5 +1,6 @@
 package com.dgut.community.controller;
 
+import com.dgut.community.Utils.MdUtil;
 import com.dgut.community.dto.CommentDTO;
 import com.dgut.community.entity.Comment;
 import com.dgut.community.entity.Notice;
@@ -47,7 +48,7 @@ public class CommentController {
         }
         Comment comment = new Comment();
         comment.setParent_id(commentDTO.getParent_id());
-        comment.setContent(commentDTO.getContent());
+        comment.setContent(MdUtil.MdToHtml(commentDTO.getContent()));
         comment.setType(commentDTO.getType());
         comment.setGmt_create(System.currentTimeMillis());
         comment.setGmt_modified(System.currentTimeMillis());
@@ -123,9 +124,12 @@ public class CommentController {
     }
     @RequestMapping(value = "/commentdelete",method = RequestMethod.POST)
     @ResponseBody
-    public int delete(Integer cid,Integer qid){
+    public int delete(@RequestParam("cid")Integer cid,@RequestParam("qid")Integer qid){
         int row = commentMapper.del(cid);
-        questionMapper.reduceCommentcount(qid);
+        if (row>0){
+            commentMapper.delsecond(cid);
+            questionMapper.reduceCommentcount(qid);
+        }
         return row;
     }
 

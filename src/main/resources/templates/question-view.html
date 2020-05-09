@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="../static/css/like.css">
     <link rel="stylesheet" href="../static/css/style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="../static/css/bootstrap.css">
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css">
     <link rel="stylesheet" href="../static/css/editormd.min.css">
     <script src="../static/js/bootstrap.js"></script>
     <!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
@@ -68,17 +70,17 @@
             margin-bottom: 15px;
             border-bottom: 1px solid #eee;
         }
-        .sec-comments{
-            border-radius: 5px;
-            margin-top: 10px;
-            border: 1px solid #eeeeee;
-            padding-top: 15px;
-        }
         .sec-comments .btn{
             margin: 10px 0px;
         }
         .tag{
             margin-right: 5px;
+        }
+        .sec-comments{
+            border-radius: 5px;
+            margin-top: 10px;
+            border: 1px solid #eeeeee;
+            padding-top: 15px;
         }
     </style>
 </head>
@@ -121,7 +123,7 @@
                         <ul>
                             <li><a href="/"><span>Home</span></a></li>
                             <li><a href="/to_categories"><span>Categories</span></a></li>
-                            <li><a href="/message"><span>Leave a Message</span></a></li>
+                            <li><a href="/to_message"><span>Leave a Message</span></a></li>
                         </ul>
                     </nav>
                 </div>
@@ -170,7 +172,7 @@
                                     <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
                                     <li th:if="${session.user.role_type==1}"><a href="/personal/question">我的问题</a></li>
-                                    <li><a href="/personal/reply">我的回复</a></li>
+                                    <li><a href="/personal/myreply">我的回复</a></li>
                                     <li><a href="/personal/collect">我的收藏</a></li>
                                     <li><a href="/logout" >登出</a></li>
                                 </ul>
@@ -213,15 +215,8 @@
                         </div><br>
                     </div>
                     <div class="tt-item-description" id="question-view">
-                        <textarea style="display: none;" th:text="${question.content}"></textarea>
+                        <span  th:utext="${question.content}"></span>
                     </div>
-                     <script type="text/javascript">
-                         $(function() {
-                             editormd.markdownToHTML("question-view", {
-                                 tex: true,
-                             });
-                         });
-                     </script>
                 </div>
             </div>
             <div class="tt-item">
@@ -240,6 +235,7 @@
                                 <span class="tt-text" th:text="${question.viewCount}"></span>
                             </a>
                         </div>
+                        <input type="hidden" id="title" name="title" th:value="${question.title}">
                         <h3 class="tt-item" th:if="${collect==0}">
                             <!--<i class="tt-icon"><svg><use xlink:href="#icon-favorite"></use></svg></i>-->
                             <span class="glyphicon glyphicon-star-empty" id="sc" th:onclick="'f('+${question.id}+')'" style="cursor: pointer;margin-top: -1px"></span>
@@ -295,23 +291,7 @@
                         </div>
                     </div>
                     <hr>
-                    <div class="row-object-inline form-default">
-                        <h6 class="tt-title">被这几位老师回复:</h6>
-                        <ul class="tt-list-badge tt-size-lg">
-                            <li><a href="#"><span class="tt-badge">Recent</span></a></li>
-                            <li><a href="#"><span class="tt-color02 tt-badge">Most Liked</span></a></li>
-                            <li><a href="#"><span class="tt-badge">Longest</span></a></li>
-                            <li><a href="#"><span class="tt-badge">Shortest</span></a></li>
-                            <li><a href="#"><span class="tt-badge">Accepted Answers</span></a></li>
-                        </ul>
-                        <select class="tt-select form-control">
-                            <option value="Recent">Recent</option>
-                            <option value="Most Liked">Most Liked</option>
-                            <option value="Longest">Longest</option>
-                            <option value="Shortest">Shortest</option>
-                            <option value="Accepted Answer">Accepted Answer</option>
-                        </select>
-                    </div>
+
                 </div>
             </div>
             <div class="tt-wrapper-inner">
@@ -344,12 +324,55 @@
                 </div>
             </div>
 
-            <div class="tt-item">
-                 <div class="tt-single-topic" th:each="comment : ${commentList}">
+            <div class="tt-item tt-wrapper-success" th:each="comment1 : ${commentList}" th:if="${comment1.user.role_type==2}">
+                <div class="tt-single-topic">
                     <div class="tt-item-header pt-noborder">
                         <div class="tt-item-info info-top">
                             <div class="tt-avatar-icon">
-                                <i class="tt-icon"><svg><use xlink:href="#icon-ava-t"></use></svg></i>
+                                <i class="tt-icon" th:if="${comment1.user.avatar==null}"><svg><use xlink:href="#icon-ava-d"></use></svg></i>
+                                <a href="#" th:if="${comment1.user.avatar!=null}">
+                                    <img class="img-circle" style="width: 38px;height: 38px;margin-top: 5px" th:src="${comment1.user.avatar}">
+                                </a>
+                            </div>
+                            <div class="tt-avatar-title">
+                                <span th:text="${comment1.user.username}+老师"></span>
+                                <span class="tt-color13 tt-badge">教师回答</span>
+                            </div>
+                            <a href="#" class="tt-info-time">
+                                <i class="tt-icon"><svg><use xlink:href="#icon-time"></use></svg></i><span class="pull-right" th:text="${#dates.format(comment1.gmt_create,'yyyy-MM-dd')}"></span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="tt-item-description">
+                        <span th:utext="${comment1.content}"></span>
+                    </div>
+                    <div class="tt-item-info info-bottom">
+                        <div class="menu">
+                            <span class="glyphicon glyphicon-thumbs-up icon"></span>&nbsp;&nbsp;
+                            <span class="glyphicon glyphicon-comment icon" th:data-id="${comment1.id}" onclick="collapseComments(this)" th:text="${comment1.secomment_count}"></span>&nbsp;&nbsp;
+
+                            <a class="glyphicon glyphicon-trash" th:if="${session.user != null && comment1.commentator == session.user.user_id}" style="font-size: 12px" th:onclick="'del('+${comment1.id}+')'"></a>
+                        </div>
+
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 collapse sec-comments" th:id="${'comment-'+comment1.id}">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <input type="text" class="form-control" placeholder="评论一下..." th:id="${'reply-'+comment1.id}">
+                                <button type="button" class="btn btn-success pull-right btn" onclick="postsecond(this)" th:data-id="${comment1.id}">回复</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tt-item">
+                 <div class="tt-single-topic media" th:each="comment : ${commentList}" th:if="${comment.user.role_type!=2}">
+                    <div class="tt-item-header pt-noborder">
+                        <div class="tt-item-info info-top">
+                            <div class="tt-avatar-icon">
+                                <i class="tt-icon" th:if="${comment.user.avatar==null}"><svg><use xlink:href="#icon-ava-d"></use></svg></i>
+                                <a href="#" th:if="${comment.user.avatar!=null}">
+                                    <img class="img-circle" style="width: 38px;height: 38px;margin-top: 5px" th:src="${comment.user.avatar}">
+                                </a>
                             </div>
                             <div class="tt-avatar-title">
                                 <span th:text="${comment.user.username}"></span>
@@ -360,116 +383,36 @@
                         </div>
                     </div>
                      <!--<div class="tt-item-description" th:text="${comment.content}"></div>-->
-                     <div class="tt-item-description" th:id="${comment.id}">
-                         <textarea style="display: none;" th:text="${comment.content}" onchange="get()"></textarea>
-                         <input type="hidden" id="comment_id" th:value="${comment.id}">
+                     <div class="tt-item-description" id="comment">
+                         <span  th:utext="${comment.content}" ></span>
                      </div>
-                     <script type="text/javascript">
-                         function get() {
-                             var comment_id = $("#comment_id").val();
-                             console.log(comment_id);
-                             editormd.markdownToHTML(comment_id, {
-                                 tex:true
-                             });
-                         }
+                    <br>
+                     <div class="menu">
+                         <span class="glyphicon glyphicon-thumbs-up icon"></span>&nbsp;&nbsp;
+                         <span class="glyphicon glyphicon-comment icon" th:data-id="${comment.id}" onclick="collapseComments(this)" th:text="${comment.secomment_count}"></span>&nbsp;&nbsp;
 
+                         <a class="glyphicon glyphicon-trash" th:if="${session.user != null && comment.commentator == session.user.user_id}" style="font-size: 12px" th:onclick="'del('+${comment.id}+')'"></a>
+                     </div>
 
-                     </script>
-                    <div class="tt-item-info info-bottom">
-                        <a href="#" class="tt-icon-btn">
-                            <i class="tt-icon"><svg><use xlink:href="#icon-like"></use></svg></i>
-                            <span class="tt-text">671</span>
-                        </a>
-                        <a href="#" class="tt-icon-btn">
-                             <i class="tt-icon"><svg><use xlink:href="#icon-favorite"></use></svg></i>
-                            <span class="tt-text">12</span>
-                        </a>
-                        <div class="col-separator"></div>
-                        <a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">
-                             <i class="tt-icon"><svg><use xlink:href="#icon-reply"></use></svg></i>
-                        </a>
-                    </div>
+                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 collapse sec-comments" th:id="${'comment-'+comment.id}">
+                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                             <input type="text" class="form-control" placeholder="评论一下..." th:id="${'reply-'+comment.id}">
+                             <button type="button" class="btn btn-success pull-right btn" onclick="postsecond(this)" th:data-id="${comment.id}">回复</button>
+                         </div>
+                     </div>
+                    <!--<div class="tt-item-info info-bottom">-->
+                        <!--<a href="#" class="tt-icon-btn">-->
+                            <!--<i class="tt-icon"><svg><use xlink:href="#icon-like"></use></svg></i>-->
+                            <!--<span class="tt-text">671</span>-->
+                        <!--</a>-->
+                        <!--<a href="#" class="tt-icon-btn">-->
+                             <!--<i class="tt-icon"><svg><use xlink:href="#icon-favorite"></use></svg></i>-->
+                            <!--<span class="tt-text">12</span>-->
+                        <!--</a>-->
+                    <!--</div>-->
                 </div>
             </div>
-            <div class="tt-item tt-wrapper-success">
-                 <div class="tt-single-topic">
-                    <div class="tt-item-header pt-noborder">
-                        <div class="tt-item-info info-top">
-                            <div class="tt-avatar-icon">
-                                <i class="tt-icon"><svg><use xlink:href="#icon-ava-t"></use></svg></i>
-                            </div>
-                            <div class="tt-avatar-title">
-                               <a href="#">tesla02</a>
-                               <span class="tt-color13 tt-badge">best answer</span>
-                            </div>
-                            <a href="#" class="tt-info-time">
-                                <i class="tt-icon"><svg><use xlink:href="#icon-time"></use></svg></i>6 Jan,2019
-                            </a>
-                        </div>
-                    </div>
-                    <div class="tt-item-description">
-                        Finally!<br>
-                        Are there any special recommendations for design or an updated guide that includes new preview sizes, including retina displays?
-                    </div>
-                    <div class="tt-item-info info-bottom">
-                        <a href="#" class="tt-icon-btn">
-                            <i class="tt-icon"><svg><use xlink:href="#icon-like"></use></svg></i>
-                            <span class="tt-text">671</span>
-                        </a>
-                        <a href="#" class="tt-icon-btn">
-                             <i class="tt-icon"><svg><use xlink:href="#icon-dislike"></use></svg></i>
-                            <span class="tt-text">39</span>
-                        </a>
-                        <a href="#" class="tt-icon-btn">
-                             <i class="tt-icon"><svg><use xlink:href="#icon-favorite"></use></svg></i>
-                            <span class="tt-text">12</span>
-                        </a>
-                        <div class="col-separator"></div>
-                        <a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">
-                            <i class="tt-icon"><svg><use xlink:href="#icon-share"></use></svg></i>
-                        </a>
-                        <a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">
-                            <i class="tt-icon"><svg><use xlink:href="#icon-flag"></use></svg></i>
-                        </a>
-                        <a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">
-                             <i class="tt-icon"><svg><use xlink:href="#icon-reply"></use></svg></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="tt-item tt-wrapper-danger">
-                 <div class="tt-single-topic">
-                    <div class="tt-item-header pt-noborder">
-                        <div class="tt-item-info info-top">
-                            <div class="tt-avatar-icon">
-                                <i class="tt-icon"><svg><use xlink:href="#icon-ava-u"></use></svg></i>
-                            </div>
-                            <div class="tt-avatar-title">
-                               <a href="#">usain31</a>
-                            </div>
-                            <a href="#" class="tt-info-time">
-                                <i class="tt-icon"><svg><use xlink:href="#icon-time"></use></svg></i>6 Jan,2019
-                            </a>
-                        </div>
-                    </div>
-                    <div class="tt-item-description">
-                       This post has been flagged by a moderator, received too many downvotes.
-                    </div>
-                    <div class="row">
-                        <div class="col-auto">
-                            <div class="tt-item-info info-bottom">
-                                <a href="#" class="tt-icon-btn">
-                                     <i class="tt-icon"><svg><use xlink:href="#icon-dislike"></use></svg></i>
-                                    <span class="tt-text">39</span>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-auto ml-auto">
-                            <a href="#" class="btn btn-primary tt-offset-27">Show Reply</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
         </div>
         <div class="tt-wrapper-inner">
             <h4 class="tt-title-separator"><span>You’ve reached the end of replies</span></h4>
@@ -773,6 +716,7 @@
 <script src="../static/js/bundle.js"></script>
 <script src="../static/js/like.js"></script>
 <script src="../static/js/collection.js"></script>
+<script src="../static/js/question-view.js"></script>
 <script>
     window.onload = function(){
         // 注意这里使用的ES6语法

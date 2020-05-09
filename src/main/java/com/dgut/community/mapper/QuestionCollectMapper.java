@@ -11,11 +11,13 @@ import java.util.List;
 @Repository
 public interface QuestionCollectMapper {
 
-    int collect(@Param("user_id") Integer user_id, @Param("question_id") Integer id);
+    int collect(@Param("user_id") Integer user_id, @Param("question_id") Integer id, @Param("title") String title);
 
     int delcollect(@Param("user_id") Integer user_id, @Param("question_id") Integer id);
 
     QuestionCollect findByUserIDAndQID(@Param("user_id") Integer user_id, @Param("question_id") Integer id);
 
     List<QuestionCollect> findByUserID(@Param("user_id") Integer user_id);
+
+    void updateQuestionID(Integer id);
 }
